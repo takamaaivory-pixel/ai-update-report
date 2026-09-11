@@ -2,7 +2,8 @@ name: Weekly AI Update Report
 
 on:
   schedule:
-    - cron: '0 12 * * 0'
+    # 毎週日曜日 日本時間9:00
+    - cron: '0 0 * * 0'
   workflow_dispatch:
 
 permissions:
@@ -13,9 +14,263 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Test
+      - name: Generate AI update report
         run: |
-          echo "Weekly AI Update Report"
-          date -u
+          python - <<'PY'
+          import urllib.request
+          import xml.etree.ElementTree as ET
+          import re
+          from html import escape
+          from datetime import datetime, timezone, timedelta
+          from email.utils import parsedate_to_datetime
+
+          sources = [
+              ("ChatGPT / OpenAI",
+               "https://openai.com/news/rss.xml",
+               "rss"),
+              ("Gemini / Google AI",
+               "https://blog.google/feed/",
+               "rss"),
+              ("Microsoft Copilot",
+               "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/Category?category.id=Microsoft365Copilot",
+               "rss"),
+              ("Claude / Anthropic",
+               "https://www.anthropic.com/news",
+               "html"),
+          ]
+
+          def fetch(url):
+              req = urllib.request.Request(
+                  url,
+                  headers={"User-Agent": "Mozilla/5.0 AI-Update-Report"}
+              )
+              with urllib.request.urlopen(req, timeout=30) as r:
+                  return r.read()
+
+          def rss_items(url, limit=6):
+              root = ET.fromstring(fetch(url))
+              result = []
+
+              for item in root.findall(".//item")[:limit]:
+                  title = (item.findtext("title") or "").strip()
+                  link = (item.findtext("link") or "").strip()
+                  pub = (item.findtext("pubDate") or "").strip()
+
+                  if not title or not link:
+                      continue
+
+                  try:
+                      dt = parsedate_to_datetime(pub)
+                      date = dt.astimezone(timezone.utc).strftime("%Y-%m-%d")
+                  except Exception:
+                      date = ""
+
+                  result.append((date, title, link))
+
+              return result
+
+          def anthropic_items(limit=6):
+              html = fetch(
+                  "https://www.anthropic.com/news"
+              ).decode("utf-8", errors="ignore")
+
+              links = re.findall(
+                  r'href=["\'](/news/[^"\']+)["\'][^>]*>(.*?)</a>',
+                  html,
+                  re.I | re.S
+              )
+
+              result = []
+              seen = set()
+
+              for href, raw in links:
+                  if href in seen:
+                      continue
+
+                  title = re.sub(r"<[^>]+>", " ", raw)
+                  title = re.sub(r"\s+", " ", title).strip()
+
+                  if not title or len(title) < 5:
+                      continue
+
+                  seen.add(href)
+
+                  result.append(
+                      ("", title, "https://www.anthropic.com" + href)
+                  )
+
+                  if len(result) >= limit:
+                      break
+
+              return result
+
+          def make_list(items):
+              html = ""
+
+              for date, title, link in items:
+                  html += "<li>"
+
+                  if date:
+                      html += (
+                          '<span class="date">'
+                          + escape(date)
+                          + "</span>"
+                      )
+
+                  html += (
+                      '<a href="'
+                      + escape(link)
+                      + '" target="_blank" rel="noopener">'
+                      + escape(title)
+                      + "</a>"
+                  )
+
+                  html += "</li>"
+
+              return html
+
+          sections = []
+
+          for name, url, kind in sources:
+              try:
+                  if kind == "rss":
+                      items = rss_items(url)
+                  else:
+                      items = anthropic_items()
+
+                  sections.append(
+                      "<section>"
+                      "<h2>" + escape(name) + "</h2>"
+                      "<ul>" + make_list(items) + "</ul>"
+                      "</section>"
+                  )
+
+              except Exception as e:
+                  sections.append(
+                      "<section>"
+                      "<h2>" + escape(name) + "</h2>"
+                      "<p>情報取得に失敗しました。</p>"
+                      "</section>"
+                  )
+
+          jst = timezone(timedelta(hours=9))
+          now = datetime.now(timezone.utc).astimezone(jst)
+
+          page = """<!doctype html>
+          <html lang="ja">
+          <head>
+          <meta charset="utf-8">
+          <meta name="viewport"
+                content="width=device-width, initial-scale=1">
+          <title>主要AIアプリ・アップデートまとめ</title>
+
+          <style>
+          body {
+            font-family:
+              system-ui,
+              -apple-system,
+              "Noto Sans JP",
+              sans-serif;
+            line-height: 1.7;
+            max-width: 900px;
+            margin: auto;
+            padding: 24px;
+            background: #f6f7f9;
+            color: #202124;
+          }
+
+          header, section {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 10px #00000010;
+          }
+
+          h1 {
+            margin-top: 0;
+          }
+
+          h2 {
+            margin-bottom: 8px;
+          }
+
+          li {
+            margin: 8px 0;
+          }
+
+          a {
+            color: #1769aa;
+          }
+
+          .date {
+            color: #777;
+            margin-right: 10px;
+            font-size: 0.9em;
+          }
+
+          .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: #e8f0fe;
+            color: #174ea6;
+            font-size: 0.8em;
+          }
+          </style>
+          </head>
+
+          <body>
+
+          <header>
+          <h1>主要AIアプリ・アップデートまとめ</h1>
+
+          <p>
+          <span class="badge">自動更新</span>
+          ChatGPT / Gemini / Claude /
+          Microsoft Copilot
+          </p>
+
+          <p>
+          最終更新：
+          """ + now.strftime("%Y-%m-%d %H:%M") + """（日本時間）
+          </p>
+
+          <p>
+          各社の公式情報を定期的に収集しています。
+          </p>
+          </header>
+
+          """ + "".join(sections) + """
+
+          <footer>
+          <p>
+          ※各社の公式ページへのリンクを掲載しています。
+          </p>
+          </footer>
+
+          </body>
+          </html>
+          """
+
+          with open("index.html", "w", encoding="utf-8") as f:
+              f.write(page)
+
+          PY
+
+      - name: Commit and publish
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Update weekly AI report"
+            git push
+          fi
