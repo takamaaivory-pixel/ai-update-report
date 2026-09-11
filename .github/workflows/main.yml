@@ -1,0 +1,21 @@
+name: Weekly AI Update Report
+
+on:
+  schedule:
+    - cron: '0 12 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Test
+        run: |
+          echo "Weekly AI Update Report"
+          date -u
