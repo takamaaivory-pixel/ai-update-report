@@ -1,0 +1,201 @@
+name: AI Analysis Report
+
+on:
+  workflow_run:
+    workflows:
+      - Weekly AI Update Report
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  analyze:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+
+      - name: Analyze with OpenAI
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          with open("index.html", "r", encoding="utf-8") as f:
+              current_html = f.read()
+
+          previous_html = ""
+
+          try:
+              previous_html = os.popen(
+                  "git show HEAD~1:index.html 2>/dev/null"
+              ).read()
+          except Exception:
+              pass
+
+          prompt = r"""
+あなたは企業の内部監査・IT統制・AIガバナンスを担当する専門家です。
+
+以下の「今週のAIサービス公式情報」と「前回レポート」を分析し、
+内部監査担当者向けの週刊レポートを作成してください。
+
+対象：
+- ChatGPT / OpenAI
+- Gemini / Google
+- Claude / Anthropic
+- Microsoft Copilot
+
+重要事項：
+
+1. 事実と分析を明確に分ける
+2. 存在確認できないモデル名・機能名・料金等を推測しない
+3. 公式情報を最優先する
+4. 必要に応じてWeb検索を使用する
+5. 未確認情報は「現時点で公式情報を確認できず」とする
+6. 前回からの差分を意識する
+7. 内部監査・IT統制への影響を重視する
+
+各アップデートについて可能な範囲で、
+- 新規
+- 変更
+- 継続
+- 終了
+
+を判定してください。
+
+重要度：
+★★★ 重要
+★★☆ 注目
+★☆☆ 参考
+
+レポート構成：
+
+1. 今週の重要アップデートTOP5
+2. ChatGPT / OpenAI
+3. Gemini / Google
+4. Claude / Anthropic
+5. Microsoft Copilot
+6. 内部監査への示唆
+7. 今後ウォッチすべき事項
+8. 情報源
+
+内部監査への示唆では、
+- AIガバナンス
+- IT全般統制
+- 変更管理
+- アクセス管理
+- ログ管理
+- 情報セキュリティ
+- AI利用ルール
+- AI出力の品質管理
+- 監査証跡
+- 業務へのAI導入
+
+を重点的に評価してください。
+
+HTMLは完全なHTML文書として出力してください。
+
+外部CSS・JavaScriptは使用せず、
+CSSはHTML内部に記述してください。
+
+スマートフォンでも読みやすいデザインにしてください。
+
+各情報源にはクリック可能なリンクを付けてください。
+
+HTML以外の説明文は出力しないでください。
+
+最後に必ず以下の注意書きを入れてください。
+
+「このレポートは公開情報に基づく情報整理であり、監査判断そのものを代替するものではありません。」
+
+【今週の情報】
+""" + current_html + r"""
+
+【前回のレポート】
+""" + previous_html
+
+          payload = {
+              "model": "gpt-5.6-luna",
+              "tools": [
+                  {
+                      "type": "web_search_preview"
+                  }
+              ],
+              "input": prompt
+          }
+
+          request = urllib.request.Request(
+              "https://api.openai.com/v1/responses",
+              data=json.dumps(payload).encode("utf-8"),
+              headers={
+                  "Authorization":
+                      "Bearer " + os.environ["OPENAI_API_KEY"],
+                  "Content-Type": "application/json"
+              },
+              method="POST"
+          )
+
+          with urllib.request.urlopen(
+              request,
+              timeout=180
+          ) as response:
+              result = json.loads(
+                  response.read().decode("utf-8")
+              )
+
+          output = ""
+
+          for item in result.get("output", []):
+              if item.get("type") == "message":
+                  for content in item.get("content", []):
+                      if content.get("type") == "output_text":
+                          output += content.get(
+                              "text",
+                              ""
+                          )
+
+          if not output.strip():
+              raise RuntimeError(
+                  "OpenAI API returned no HTML output."
+              )
+
+          if "<html" not in output.lower():
+              raise RuntimeError(
+                  "AI output was not a complete HTML document."
+              )
+
+          with open(
+              "index.html",
+              "w",
+              encoding="utf-8"
+          ) as f:
+              f.write(output)
+
+          print(
+              "AI analysis report generated successfully."
+          )
+          PY
+
+      - name: Commit analyzed report
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add index.html
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "Generate AI analyzed weekly report"
+            git push
+          fi
