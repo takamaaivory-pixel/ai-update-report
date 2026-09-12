@@ -2,7 +2,6 @@ name: Weekly AI Update Report
 
 on:
   schedule:
-    # 毎週日曜日 日本時間9:00
     - cron: '0 0 * * 0'
   workflow_dispatch:
 
@@ -27,31 +26,27 @@ jobs:
           from datetime import datetime, timezone, timedelta
           from email.utils import parsedate_to_datetime
 
-          sources = [
-              ("ChatGPT / OpenAI",
-               "https://openai.com/news/rss.xml",
-               "rss"),
-              ("Gemini / Google AI",
-               "https://deepmind.google/blog/rss.xml",
-               "rss"),
-              ("Microsoft Copilot",
-               "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/Category?category.id=Microsoft365Copilot",
-               "rss"),
-              ("Claude / Anthropic",
-               "https://www.anthropic.com/news",
-               "html"),
-          ]
+          UA = "Mozilla/5.0 (AI Update Report; +https://github.com/)"
 
           def fetch(url):
               req = urllib.request.Request(
                   url,
-                  headers={"User-Agent": "Mozilla/5.0 AI-Update-Report"}
+                  headers={
+                      "User-Agent": UA,
+                      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                  }
               )
               with urllib.request.urlopen(req, timeout=30) as r:
                   return r.read()
 
-          def rss_items(url, limit=6):
-              root = ET.fromstring(fetch(url))
+          def clean(text):
+              text = re.sub(r"<[^>]+>", " ", text)
+              text = re.sub(r"\s+", " ", text)
+              return text.strip()
+
+          def rss_items(url, limit=8):
+              data = fetch(url)
+              root = ET.fromstring(data)
               result = []
 
               for item in root.findall(".//item")[:limit]:
@@ -62,38 +57,94 @@ jobs:
                   if not title or not link:
                       continue
 
+                  date = ""
+
                   try:
                       dt = parsedate_to_datetime(pub)
                       date = dt.astimezone(timezone.utc).strftime("%Y-%m-%d")
                   except Exception:
-                      date = ""
+                      pass
 
                   result.append((date, title, link))
 
               return result
 
-          def anthropic_items(limit=6):
-              html = fetch(
-                  "https://www.anthropic.com/news"
-              ).decode("utf-8", errors="ignore")
+          def google_gemini_items(limit=8):
+              url = "https://blog.google/products-and-platforms/products/gemini/"
+              html = fetch(url).decode("utf-8", errors="ignore")
 
-              links = re.findall(
-                  r'href=["\'](/news/[^"\']+)["\'][^>]*>(.*?)</a>',
-                  html,
+              pattern = re.compile(
+                  r'href=["\']([^"\']+)["\'][^>]*>(.*?)</a>',
                   re.I | re.S
               )
 
               result = []
               seen = set()
 
-              for href, raw in links:
-                  if href in seen:
+              for href, raw in pattern.findall(html):
+
+                  title = clean(raw)
+
+                  if not title:
                       continue
 
-                  title = re.sub(r"<[^>]+>", " ", raw)
-                  title = re.sub(r"\s+", " ", title).strip()
+                  if href.startswith("/"):
+                      href = "https://blog.google" + href
+
+                  if not href.startswith("https://blog.google/"):
+                      continue
+
+                  if "/products-and-platforms/products/gemini/" not in href:
+                      continue
+
+                  if href.rstrip("/") == url.rstrip("/"):
+                      continue
+
+                  key = href
+
+                  if key in seen:
+                      continue
+
+                  # Gemini関連の記事らしいタイトルだけ採用
+                  keywords = [
+                      "Gemini",
+                      "AI",
+                      "Lyria",
+                      "Veo",
+                      "NotebookLM"
+                  ]
+
+                  if not any(k.lower() in title.lower() for k in keywords):
+                      continue
+
+                  seen.add(key)
+                  result.append(("", title, href))
+
+                  if len(result) >= limit:
+                      break
+
+              return result
+
+          def anthropic_items(limit=8):
+              url = "https://www.anthropic.com/news"
+              html = fetch(url).decode("utf-8", errors="ignore")
+
+              pattern = re.compile(
+                  r'href=["\'](/news/[^"\']+)["\'][^>]*>(.*?)</a>',
+                  re.I | re.S
+              )
+
+              result = []
+              seen = set()
+
+              for href, raw in pattern.findall(html):
+
+                  title = clean(raw)
 
                   if not title or len(title) < 5:
+                      continue
+
+                  if href in seen:
                       continue
 
                   seen.add(href)
@@ -107,131 +158,251 @@ jobs:
 
               return result
 
-          def make_list(items):
-              html = ""
+          def microsoft_items(limit=8):
+              urls = [
+                  "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/Category?category.id=Microsoft365Copilot",
+                  "https://www.microsoft.com/en-us/microsoft-365/blog/feed/"
+              ]
+
+              for url in urls:
+                  try:
+                      items = rss_items(url, limit)
+
+                      if items:
+                          return items
+                  except Exception:
+                      continue
+
+              return []
+
+          sources = []
+
+          # OpenAI
+          try:
+              items = rss_items(
+                  "https://openai.com/news/rss.xml"
+              )
+              sources.append(
+                  ("ChatGPT / OpenAI", items)
+              )
+          except Exception:
+              sources.append(
+                  ("ChatGPT / OpenAI", [])
+              )
+
+          # Gemini
+          try:
+              items = google_gemini_items()
+              sources.append(
+                  ("Gemini / Google AI", items)
+              )
+          except Exception:
+              sources.append(
+                  ("Gemini / Google AI", [])
+              )
+
+          # Claude
+          try:
+              items = anthropic_items()
+              sources.append(
+                  ("Claude / Anthropic", items)
+              )
+          except Exception:
+              sources.append(
+                  ("Claude / Anthropic", [])
+              )
+
+          # Microsoft Copilot
+          try:
+              items = microsoft_items()
+              sources.append(
+                  ("Microsoft Copilot", items)
+              )
+          except Exception:
+              sources.append(
+                  ("Microsoft Copilot", [])
+              )
+
+          def make_section(name, items):
+              html = "<section>"
+              html += "<h2>" + escape(name) + "</h2>"
+
+              if not items:
+                  html += "<p class='error'>現時点で公式情報を取得できませんでした。</p>"
+                  html += "</section>"
+                  return html
+
+              html += "<ul>"
 
               for date, title, link in items:
                   html += "<li>"
 
                   if date:
                       html += (
-                          '<span class="date">'
+                          "<span class='date'>"
                           + escape(date)
                           + "</span>"
                       )
 
                   html += (
-                      '<a href="'
+                      "<a href='"
                       + escape(link)
-                      + '" target="_blank" rel="noopener">'
+                      + "' target='_blank' rel='noopener'>"
                       + escape(title)
                       + "</a>"
                   )
 
                   html += "</li>"
 
+              html += "</ul>"
+              html += "</section>"
+
               return html
-
-          sections = []
-
-          for name, url, kind in sources:
-              try:
-                  if kind == "rss":
-                      items = rss_items(url)
-                  else:
-                      items = anthropic_items()
-
-                  sections.append(
-                      "<section>"
-                      "<h2>" + escape(name) + "</h2>"
-                      "<ul>" + make_list(items) + "</ul>"
-                      "</section>"
-                  )
-
-              except Exception as e:
-                  sections.append(
-                      "<section>"
-                      "<h2>" + escape(name) + "</h2>"
-                      "<p>情報取得に失敗しました。</p>"
-                      "</section>"
-                  )
 
           jst = timezone(timedelta(hours=9))
           now = datetime.now(timezone.utc).astimezone(jst)
 
+          sections = ""
+
+          for name, items in sources:
+              sections += make_section(name, items)
+
           page = """<!doctype html>
           <html lang="ja">
+
           <head>
           <meta charset="utf-8">
+
           <meta name="viewport"
                 content="width=device-width, initial-scale=1">
+
           <title>主要AIアプリ・アップデートまとめ</title>
 
           <style>
+
+          * {
+            box-sizing: border-box;
+          }
+
           body {
+            margin: 0;
+            padding: 20px;
+            background: #f4f6f8;
+            color: #202124;
             font-family:
               system-ui,
               -apple-system,
+              BlinkMacSystemFont,
               "Noto Sans JP",
               sans-serif;
             line-height: 1.7;
-            max-width: 900px;
-            margin: auto;
-            padding: 24px;
-            background: #f6f7f9;
-            color: #202124;
           }
 
-          header, section {
+          main {
+            max-width: 900px;
+            margin: auto;
+          }
+
+          header,
+          section,
+          footer {
             background: white;
             border-radius: 14px;
             padding: 20px;
             margin-bottom: 18px;
-            box-shadow: 0 2px 10px #00000010;
+            box-shadow: 0 2px 12px rgba(0,0,0,.08);
           }
 
           h1 {
             margin-top: 0;
+            line-height: 1.35;
           }
 
           h2 {
-            margin-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 8px;
+          }
+
+          ul {
+            padding-left: 22px;
           }
 
           li {
-            margin: 8px 0;
+            margin: 10px 0;
           }
 
           a {
             color: #1769aa;
+            text-decoration: none;
+          }
+
+          a:hover {
+            text-decoration: underline;
+          }
+
+          .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #174ea6;
+            border-radius: 999px;
+            padding: 3px 10px;
+            font-size: .85em;
           }
 
           .date {
             color: #777;
             margin-right: 10px;
-            font-size: 0.9em;
+            font-size: .9em;
           }
 
-          .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: #e8f0fe;
-            color: #174ea6;
-            font-size: 0.8em;
+          .error {
+            color: #b3261e;
           }
+
+          footer {
+            color: #666;
+            font-size: .9em;
+          }
+
+          @media (max-width: 600px) {
+
+            body {
+              padding: 10px;
+            }
+
+            header,
+            section,
+            footer {
+              padding: 16px;
+              border-radius: 10px;
+            }
+
+            h1 {
+              font-size: 1.5rem;
+            }
+
+            h2 {
+              font-size: 1.2rem;
+            }
+
+          }
+
           </style>
           </head>
 
           <body>
 
+          <main>
+
           <header>
-          <h1>主要AIアプリ・アップデートまとめ</h1>
+
+          <h1>
+          主要AIアプリ・アップデートまとめ
+          </h1>
 
           <p>
           <span class="badge">自動更新</span>
-          ChatGPT / Gemini / Claude /
-          Microsoft Copilot
+          ChatGPT / Gemini / Claude / Microsoft Copilot
           </p>
 
           <p>
@@ -242,22 +413,38 @@ jobs:
           <p>
           各社の公式情報を定期的に収集しています。
           </p>
+
           </header>
 
-          """ + "".join(sections) + """
+          """ + sections + """
 
           <footer>
+
           <p>
-          ※各社の公式ページへのリンクを掲載しています。
+          情報源は各社の公式サイトを優先しています。
           </p>
+
+          <p>
+          このレポートは公開情報に基づく情報整理であり、
+          監査判断そのものを代替するものではありません。
+          </p>
+
           </footer>
+
+          </main>
 
           </body>
           </html>
           """
 
-          with open("index.html", "w", encoding="utf-8") as f:
+          with open(
+              "index.html",
+              "w",
+              encoding="utf-8"
+          ) as f:
               f.write(page)
+
+          print("AI update report generated successfully.")
 
           PY
 
