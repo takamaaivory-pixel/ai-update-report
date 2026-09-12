@@ -32,7 +32,7 @@ jobs:
                "https://openai.com/news/rss.xml",
                "rss"),
               ("Gemini / Google AI",
-               "https://blog.google/innovation-and-ai/technology/ai/rss/",
+               "https://deepmind.google/blog/rss.xml",
                "rss"),
               ("Microsoft Copilot",
                "https://techcommunity.microsoft.com/t5/s/gxcuf89792/rss/Category?category.id=Microsoft365Copilot",
