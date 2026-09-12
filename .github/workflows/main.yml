@@ -125,6 +125,7 @@ jobs:
                       break
 
               return result
+              
           def anthropic_items(limit=8):
               url = "https://www.anthropic.com/news"
               html = fetch(url).decode("utf-8", errors="ignore")
