@@ -69,7 +69,7 @@ jobs:
 
               return result
 
-          def google_gemini_items(limit=8):
+                    def google_gemini_items(limit=8):
               url = "https://blog.google/products-and-platforms/products/gemini/"
               html = fetch(url).decode("utf-8", errors="ignore")
 
@@ -81,11 +81,18 @@ jobs:
               result = []
               seen = set()
 
+              keywords = [
+                  "Gemini",
+                  "Lyria",
+                  "Veo",
+                  "AI"
+              ]
+
               for href, raw in pattern.findall(html):
 
                   title = clean(raw)
 
-                  if not title:
+                  if not title or len(title) < 8:
                       continue
 
                   if href.startswith("/"):
@@ -94,37 +101,30 @@ jobs:
                   if not href.startswith("https://blog.google/"):
                       continue
 
-                  if "/products-and-platforms/products/gemini/" not in href:
-                      continue
-
+                  # Gemini公式ページそのものは除外
                   if href.rstrip("/") == url.rstrip("/"):
                       continue
 
-                  key = href
-
-                  if key in seen:
+                  # Gemini関連らしいタイトルだけ採用
+                  if not any(
+                      keyword.lower() in title.lower()
+                      for keyword in keywords
+                  ):
                       continue
 
-                  # Gemini関連の記事らしいタイトルだけ採用
-                  keywords = [
-                      "Gemini",
-                      "AI",
-                      "Lyria",
-                      "Veo",
-                      "NotebookLM"
-                  ]
-
-                  if not any(k.lower() in title.lower() for k in keywords):
+                  if href in seen:
                       continue
 
-                  seen.add(key)
-                  result.append(("", title, href))
+                  seen.add(href)
+
+                  result.append(
+                      ("", title, href)
+                  )
 
                   if len(result) >= limit:
                       break
 
               return result
-
           def anthropic_items(limit=8):
               url = "https://www.anthropic.com/news"
               html = fetch(url).decode("utf-8", errors="ignore")
