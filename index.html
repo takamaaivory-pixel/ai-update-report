@@ -1,95 +1,168 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
 <meta charset="utf-8">
+
 <meta name="viewport"
       content="width=device-width, initial-scale=1">
+
 <title>主要AIアプリ・アップデートまとめ</title>
 
 <style>
+
+* {
+  box-sizing: border-box;
+}
+
 body {
+  margin: 0;
+  padding: 20px;
+  background: #f4f6f8;
+  color: #202124;
   font-family:
     system-ui,
     -apple-system,
+    BlinkMacSystemFont,
     "Noto Sans JP",
     sans-serif;
   line-height: 1.7;
-  max-width: 900px;
-  margin: auto;
-  padding: 24px;
-  background: #f6f7f9;
-  color: #202124;
 }
 
-header, section {
+main {
+  max-width: 900px;
+  margin: auto;
+}
+
+header,
+section,
+footer {
   background: white;
   border-radius: 14px;
   padding: 20px;
   margin-bottom: 18px;
-  box-shadow: 0 2px 10px #00000010;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
 }
 
 h1 {
   margin-top: 0;
+  line-height: 1.35;
 }
 
 h2 {
-  margin-bottom: 8px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
+}
+
+ul {
+  padding-left: 22px;
 }
 
 li {
-  margin: 8px 0;
+  margin: 10px 0;
 }
 
 a {
   color: #1769aa;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.badge {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #174ea6;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: .85em;
 }
 
 .date {
   color: #777;
   margin-right: 10px;
-  font-size: 0.9em;
+  font-size: .9em;
 }
 
-.badge {
-  display: inline-block;
-  padding: 3px 8px;
-  border-radius: 999px;
-  background: #e8f0fe;
-  color: #174ea6;
-  font-size: 0.8em;
+.error {
+  color: #b3261e;
 }
+
+footer {
+  color: #666;
+  font-size: .9em;
+}
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 10px;
+  }
+
+  header,
+  section,
+  footer {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+}
+
 </style>
 </head>
 
 <body>
 
+<main>
+
 <header>
-<h1>主要AIアプリ・アップデートまとめ</h1>
+
+<h1>
+主要AIアプリ・アップデートまとめ
+</h1>
 
 <p>
 <span class="badge">自動更新</span>
-ChatGPT / Gemini / Claude /
-Microsoft Copilot
+ChatGPT / Gemini / Claude / Microsoft Copilot
 </p>
 
 <p>
 最終更新：
-2026-09-11 15:21（日本時間）
+2026-09-13 00:05（日本時間）
 </p>
 
 <p>
 各社の公式情報を定期的に収集しています。
 </p>
+
 </header>
 
-<section><h2>ChatGPT / OpenAI</h2><ul><li><span class="date">2026-09-10</span><a href="https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials" target="_blank" rel="noopener">How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules</a></li><li><span class="date">2026-09-10</span><a href="https://openai.com/index/put-data-to-work" target="_blank" rel="noopener">Now everyone can put data to work</a></li><li><span class="date">2026-09-10</span><a href="https://openai.com/index/introducing-chatgpt-financial-services" target="_blank" rel="noopener">Introducing ChatGPT for Financial Services</a></li><li><span class="date">2026-09-10</span><a href="https://openai.com/index/expanding-ai-access-us-government" target="_blank" rel="noopener">Expanding AI access and cyber defense for federal, state, local, and tribal governments</a></li><li><span class="date">2026-09-10</span><a href="https://openai.com/index/introducing-the-agents-api" target="_blank" rel="noopener">Introducing the Agents API</a></li><li><span class="date">2026-09-10</span><a href="https://openai.com/index/introducing-gpt-live-1-in-the-api" target="_blank" rel="noopener">Build more natural voice experiences with GPT‑Live‑1 in the API</a></li></ul></section><section><h2>Gemini / Google AI</h2><p>情報取得に失敗しました。</p></section><section><h2>Microsoft Copilot</h2><ul><li><span class="date">2026-09-10</span><a href="https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365-personal-premium-limits/m-p/4555270#M6952" target="_blank" rel="noopener">Microsoft Copilot 365 Personal Premium limits</a></li><li><span class="date">2026-09-10</span><a href="https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365/m-p/4555236#M6951" target="_blank" rel="noopener">Microsoft Copilot 365</a></li><li><span class="date">2026-09-10</span><a href="https://techcommunity.microsoft.com/t5/microsoft-365-copilot/copilot-button-in-outlook-365-app/m-p/4555052#M6950" target="_blank" rel="noopener">Copilot button in Outlook 365 App</a></li></ul></section><section><h2>Claude / Anthropic</h2><ul><li><a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener">Announcements Aug 31, 2026 Improving our alignment and security efforts On July 30, we reported three incidents in which Claude models gained unauthorized access to real computer systems. We are conducting an in-depth analysis of both incidents, and planning to work with METR for an independent review. In the meantime, we’re sharing some of the changes we’ve made over the past month.</a></li><li><a href="https://www.anthropic.com/news/model-hardware-standard-research-preview" target="_blank" rel="noopener">Announcements Aug 27, 2026 Previewing the Model Hardware Standard We’re opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.</a></li><li><a href="https://www.anthropic.com/news/claude-opus-5" target="_blank" rel="noopener">Product Jul 24, 2026 Introducing Claude Opus 5 Opus 5 is a step change improvement for the Opus tier powering long-running agents while delivering improvements in coding and professional work.</a></li><li><a href="https://www.anthropic.com/news/enterprise-frontier-safeguards" target="_blank" rel="noopener">Sep 1, 2026 Announcements Developing Enterprise Frontier Safeguards with our customers</a></li><li><a href="https://www.anthropic.com/news/expanding-support-for-scientists" target="_blank" rel="noopener">Aug 27, 2026 Announcements Expanding our support for scientists</a></li><li><a href="https://www.anthropic.com/news/wellbeing-research-grants" target="_blank" rel="noopener">Aug 25, 2026 Announcements Funding better evaluations of AI’s impact on wellbeing</a></li></ul></section>
+<section><h2>ChatGPT / OpenAI</h2><ul><li><span class='date'>2026-09-14</span><a href='https://openai.com/index/perplexity-improving-accuracy-with-astra' target='_blank' rel='noopener'>Perplexity trusts GPT-6 Astra with end-to-end systems</a></li><li><span class='date'>2026-09-11</span><a href='https://openai.com/index/scaling-storage-one-billion-users-part-one' target='_blank' rel='noopener'>Rapidly scaling online storage to serve over 1 billion ChatGPT users</a></li><li><span class='date'>2026-09-11</span><a href='https://openai.com/index/cognition-devin-testing-with-astra' target='_blank' rel='noopener'>Cognition helps Devin test its own work with GPT‑6 Astra</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials' target='_blank' rel='noopener'>How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/put-data-to-work' target='_blank' rel='noopener'>Now everyone can put data to work</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/introducing-chatgpt-financial-services' target='_blank' rel='noopener'>Introducing ChatGPT for Financial Services</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/expanding-ai-access-us-government' target='_blank' rel='noopener'>Expanding AI access and cyber defense for federal, state, local, and tribal governments</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/introducing-gpt-live-1-in-the-api' target='_blank' rel='noopener'>Build more natural voice experiences with GPT‑Live‑1 in the API</a></li></ul></section><section><h2>Gemini / Google AI</h2><p class='error'>現時点で公式情報を取得できませんでした。</p></section><section><h2>Claude / Anthropic</h2><ul><li><a href='https://www.anthropic.com/news/improving-alignment-security-efforts' target='_blank' rel='noopener'>Announcements Aug 31, 2026 Improving our alignment and security efforts On July 30, we reported three incidents in which Claude models gained unauthorized access to real computer systems. We are conducting an in-depth analysis of both incidents, and planning to work with METR for an independent review. In the meantime, we’re sharing some of the changes we’ve made over the past month.</a></li><li><a href='https://www.anthropic.com/news/model-hardware-standard-research-preview' target='_blank' rel='noopener'>Announcements Aug 27, 2026 Previewing the Model Hardware Standard We’re opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.</a></li><li><a href='https://www.anthropic.com/news/claude-opus-5' target='_blank' rel='noopener'>Product Jul 24, 2026 Introducing Claude Opus 5 Opus 5 is a step change improvement for the Opus tier powering long-running agents while delivering improvements in coding and professional work.</a></li><li><a href='https://www.anthropic.com/news/enterprise-frontier-safeguards' target='_blank' rel='noopener'>Sep 1, 2026 Announcements Developing Enterprise Frontier Safeguards with our customers</a></li><li><a href='https://www.anthropic.com/news/expanding-support-for-scientists' target='_blank' rel='noopener'>Aug 27, 2026 Announcements Expanding our support for scientists</a></li><li><a href='https://www.anthropic.com/news/wellbeing-research-grants' target='_blank' rel='noopener'>Aug 25, 2026 Announcements Funding better evaluations of AI’s impact on wellbeing</a></li><li><a href='https://www.anthropic.com/news/claude-text-watermark' target='_blank' rel='noopener'>Aug 14, 2026 Announcements How Claude’s text watermark works</a></li><li><a href='https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards' target='_blank' rel='noopener'>Aug 7, 2026 Product Improving Fable 5&amp;#x27;s biology safeguards</a></li></ul></section><section><h2>Microsoft Copilot</h2><ul><li><span class='date'>2026-09-11</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/request-to-reconsider-russian-speech-recognition-support-in/m-p/4555600#M6953' target='_blank' rel='noopener'>Request to Reconsider Russian Speech Recognition Support in Windows and Copilot</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365-personal-premium-limits/m-p/4555270#M6952' target='_blank' rel='noopener'>Microsoft Copilot 365 Personal Premium limits</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365/m-p/4555236#M6951' target='_blank' rel='noopener'>Microsoft Copilot 365</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/copilot-button-in-outlook-365-app/m-p/4555052#M6950' target='_blank' rel='noopener'>Copilot button in Outlook 365 App</a></li></ul></section>
 
 <footer>
+
 <p>
-※各社の公式ページへのリンクを掲載しています。
+情報源は各社の公式サイトを優先しています。
 </p>
+
+<p>
+このレポートは公開情報に基づく情報整理であり、
+監査判断そのものを代替するものではありません。
+</p>
+
 </footer>
+
+</main>
 
 </body>
 </html>
