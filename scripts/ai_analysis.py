@@ -11,6 +11,8 @@ if not API_KEY:
 
 JST = timezone(timedelta(hours=9))
 
+now = datetime.now(JST)
+report_date = now.strftime("%Y年%-m月%-d日")
 
 def read_file(path):
     try:
@@ -180,6 +182,13 @@ HTML以外の説明文は出力しないでください。
 監査判断そのものを代替するものではありません。」
 
 という注意書きを入れてください。
+
+【今回の基準日】
+
+{report_date}
+
+レポート本文に記載する「基準日」は、必ず上記の今回の基準日を使用してください。
+過去のHTMLに記載されている基準日を今回の基準日として再利用しないでください。
 
 【今回の情報】
 
