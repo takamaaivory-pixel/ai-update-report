@@ -2,65 +2,109 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
+
 <title>主要AIアプリ・アップデートまとめ</title>
+
 <style>
-*{box-sizing:border-box}
-body{
-  margin:0;padding:16px;background:#f4f6f8;color:#202124;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;
-  line-height:1.7
+* {
+  box-sizing: border-box;
 }
-main{max-width:980px;margin:auto}
-header,section,footer{
-  background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;
-  box-shadow:0 2px 12px rgba(0,0,0,.08)
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: #f4f6f8;
+  color: #202124;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Noto Sans JP",
+    sans-serif;
+  line-height: 1.7;
 }
-h1{margin-top:0;font-size:1.8rem}
-h2{border-bottom:2px solid #e5e7eb;padding-bottom:8px;margin-top:0}
-h3{margin-bottom:6px}
-h4{margin-bottom:4px}
-p{margin:8px 0}
-ul{padding-left:1.3rem}
-li{margin:8px 0}
-a{color:#1769aa;text-decoration:none}
-a:hover{text-decoration:underline}
-.badge{
-  display:inline-block;background:#e8f0fe;color:#174ea6;border-radius:999px;
-  padding:3px 10px;font-size:.85em;margin-right:5px
+
+main {
+  max-width: 900px;
+  margin: auto;
 }
-.critical{color:#b3261e;font-weight:700}
-.attention{color:#9a6700;font-weight:700}
-.reference{color:#1769aa;font-weight:700}
-.meta{color:#666;font-size:.92em}
-.notice{
-  background:#fff8e1;border-left:4px solid #f9ab00;padding:12px 14px;
-  margin:12px 0
+
+header,
+section,
+footer {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
 }
-.fact{
-  background:#f6f8fa;border-left:4px solid #5f6368;padding:10px 12px;
-  margin:8px 0
+
+h1 {
+  margin-top: 0;
 }
-.analysis{
-  background:#eef7ee;border-left:4px solid #34a853;padding:10px 12px;
-  margin:8px 0
+
+h2 {
+  border-bottom: 2px solid #eee;
+  padding-bottom: 8px;
 }
-.audit{
-  background:#f1f5ff;border-left:4px solid #4285f4;padding:10px 12px;
-  margin:8px 0
+
+li {
+  margin: 10px 0;
 }
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.94em}
-th,td{border:1px solid #dfe3e8;padding:9px;vertical-align:top}
-th{background:#f1f3f4;text-align:left}
-.small{font-size:.88em;color:#666}
-.source-list li{margin:6px 0}
-footer{color:#666;font-size:.9em}
-@media(max-width:650px){
-  body{padding:9px}
-  header,section,footer{padding:16px}
-  h1{font-size:1.45rem}
-  h2{font-size:1.2rem}
-  table{display:block;overflow-x:auto;white-space:normal}
+
+a {
+  color: #1769aa;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.badge {
+  display: inline-block;
+  background: #e8f0fe;
+  color: #174ea6;
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: .85em;
+}
+
+.date {
+  color: #777;
+  margin-right: 10px;
+  font-size: .9em;
+}
+
+.error {
+  color: #b3261e;
+}
+
+footer {
+  color: #666;
+  font-size: .9em;
+}
+
+@media (max-width: 600px) {
+  body {
+    padding: 10px;
+  }
+
+  header,
+  section,
+  footer {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
 }
 </style>
 </head>
@@ -69,587 +113,36 @@ footer{color:#666;font-size:.9em}
 <main>
 
 <header>
-  <h1>主要AIアプリ・アップデートまとめ</h1>
-  <p>
-    <span class="badge">週刊</span>
-    <span class="badge">内部監査・IT統制・AIガバナンス向け</span>
-    ChatGPT / Gemini / Claude / Microsoft Copilot
-  </p>
-  <p class="meta">
-    基準日：2026年9月12日（日本時間）<br>
-    前回レポート：今回の入力には内容がないため、差分比較は「前回レポート未提供」としています。
-  </p>
-  <div class="notice">
-    <strong>日付に関する注意：</strong>
-    入力された情報には2026年9月13日および9月14日付の項目が含まれていました。
-    本レポートの基準日である2026年9月12日時点では将来日付のため、実績済みのアップデートとしては評価していません。
-  </div>
-  <p>
-    本レポートは、各社の公式サイト・公式ブログ・公式製品情報を優先して確認し、
-    内部監査上の確認事項を付加したものです。
-  </p>
+<h1>主要AIアプリ・アップデートまとめ</h1>
+
+<p>
+<span class="badge">自動更新</span>
+ChatGPT / Gemini / Claude / Microsoft Copilot
+</p>
+
+<p>
+最終更新：
+2026-09-13 09:13（日本時間）
+</p>
+
+<p>
+各社の公式情報を定期的に収集しています。
+</p>
 </header>
 
-<section>
-  <h2>1. 今週の重要アップデートTOP5</h2>
-
-  <table>
-    <thead>
-      <tr>
-        <th>重要度</th>
-        <th>サービス</th>
-        <th>判定</th>
-        <th>アップデート</th>
-        <th>内部監査上の主な確認点</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="critical">★★★</td>
-        <td>ChatGPT / OpenAI</td>
-        <td><span class="badge">新規</span></td>
-        <td>
-          ChatGPT Workに、企業データを接続して分析、ダッシュボード作成、
-          アクションにつなげるData agentが導入された。
-        </td>
-        <td>
-          データ接続権限、データソースの正確性、生成された分析結果の承認、
-          実行可能なアクションの制限、操作ログを確認。
-        </td>
-      </tr>
-      <tr>
-        <td class="critical">★★★</td>
-        <td>Claude / Anthropic</td>
-        <td><span class="badge">新規・段階導入</span></td>
-        <td>
-          顧客管理のクラウド環境にデータを保管しつつ、不正利用検知などの
-          安全対策を組み合わせるEnterprise Frontier Safeguardsを発表。
-        </td>
-        <td>
-          データ保管場所、ゼロデータ保持との関係、導入時期、
-          検知・遮断ルール、顧客側で取得できる証跡を確認。
-        </td>
-      </tr>
-      <tr>
-        <td class="critical">★★★</td>
-        <td>Gemini / Google</td>
-        <td><span class="badge">新規</span></td>
-        <td>
-          Windows向けGeminiアプリを提供開始。ショートカットから利用でき、
-          Googleアプリ連携や複数ステップのタスク処理をサポート。
-        </td>
-        <td>
-          Windows端末への導入可否、個人アカウントとの分離、
-          Gmail・Drive等への権限、バックグラウンド処理、
-          操作ログとデータ持ち出しを確認。
-        </td>
-      </tr>
-      <tr>
-        <td class="critical">★★★</td>
-        <td>ChatGPT / OpenAI</td>
-        <td><span class="badge">新規</span></td>
-        <td>
-          金融機関向けChatGPT for Financial Servicesを発表。
-          金融データ、テンプレート、管理者機能、ログ出力等を組み合わせる。
-        </td>
-        <td>
-          顧客情報・重要非公開情報の入力可否、データ保持、
-          SSO・SCIM・RBAC、出力の根拠確認、コンプライアンスログの
-          取得範囲を確認。
-        </td>
-      </tr>
-      <tr>
-        <td class="attention">★★☆</td>
-        <td>Microsoft Copilot</td>
-        <td><span class="badge">継続・拡張</span></td>
-        <td>
-          Microsoft 365 Copilotでは、アプリを会話内に呼び出し、
-          インサイトから実際の業務処理へつなげる方向性が継続している。
-        </td>
-        <td>
-          Microsoft Graphのアクセス権、エージェントの実行権限、
-          SharePoint・Teamsの過剰共有、承認前の自動実行、
-          Purview等による監査証跡を確認。
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="analysis">
-    <strong>分析：</strong>
-    今週は、単なる文章生成よりも、企業データ・業務アプリ・外部サービスに接続し、
-    分析や実行まで行う「エージェント型利用」の拡大が中心です。
-    内部監査では、モデル性能よりも、接続権限、実行権限、承認、ログ、
-    例外処理を重点的に確認する必要があります。
-  </div>
-</section>
-
-<section>
-  <h2>2. ChatGPT / OpenAI</h2>
-
-  <h3>2-1. ChatGPT WorkのData agent</h3>
-  <p><span class="badge">新規</span> <span class="critical">★★★</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    OpenAIは2026年9月10日、ChatGPT Work向けのData agentを発表しました。
-    企業データに接続し、変化の調査、回答、インタラクティブなダッシュボード作成、
-    共有などを行う機能として説明されています。
-    <a href="https://openai.com/index/put-data-to-work/" target="_blank" rel="noopener">公式発表</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    BIツールやデータ分析業務の一部を会話形式で代替する可能性があります。
-    一方、接続先データの定義誤り、期間・母集団の取り違え、
-    因果関係と相関関係の混同が、経営報告や監査資料に混入するリスクがあります。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>接続可能なデータソースと、ユーザーごとの閲覧権限が一致しているか。</li>
-      <li>データ抽出・加工・分析・ダッシュボード共有の各操作が記録されるか。</li>
-      <li>生成された指標について、元データ・計算式・更新時点を追跡できるか。</li>
-      <li>経営会議資料、財務報告、顧客向け資料への利用に承認ルールがあるか。</li>
-      <li>分析結果から外部システムを更新する場合、人的承認や二者確認があるか。</li>
-    </ul>
-  </div>
-
-  <h3>2-2. ChatGPT for Financial Services</h3>
-  <p><span class="badge">新規</span> <span class="critical">★★★</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    OpenAIは2026年9月10日、金融機関向けのChatGPT for Financial Servicesを発表しました。
-    金融データ、企業テンプレート、金融分析ワークフローを組み合わせ、
-    SAML SSO、SCIM、ロールベースアクセス制御、保持期間設定、
-    対応するワークスペースログの出力などを説明しています。
-    <a href="https://openai.com/index/introducing-chatgpt-financial-services/" target="_blank" rel="noopener">公式発表</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    金融機関における導入判断では、機能の有無だけでなく、
-    顧客情報、重要非公開情報、投資判断資料への利用範囲と、
-    出力の根拠・承認・保存を業務規程に落とし込めるかが重要です。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>金融データ提供者との契約、利用目的、再利用・保存条件を確認。</li>
-      <li>顧客情報、重要非公開情報、個人情報の入力制限を確認。</li>
-      <li>回答中の引用・根拠情報が、利用者によって追跡可能か確認。</li>
-      <li>テンプレートや社内標準様式の変更管理・承認者を確認。</li>
-      <li>SSO、SCIM、RBAC、退職者・異動者のアカウント無効化を確認。</li>
-    </ul>
-  </div>
-
-  <h3>2-3. API・モデル・その他</h3>
-  <div class="fact">
-    <strong>事実：</strong>
-    OpenAIの公式ニュース一覧では、2026年9月10日にGPT-Live-1のAPI提供、
-    Agents API、9月9日にGPT-6 Astraに関する発表が掲載されています。
-    ただし、料金、全利用者への提供条件、既存モデルからの移行期限、
-    廃止日については、今回確認した情報だけでは一律に判定できません。
-    <a href="https://openai.com/news/" target="_blank" rel="noopener">OpenAI公式ニュース一覧</a>
-  </div>
-  <p class="small">
-    <strong>確認できない情報：</strong>
-    個別契約・地域・プラン別の提供条件および料金については、
-    現時点で公式情報を一律に確認できず。
-  </p>
-</section>
-
-<section>
-  <h2>3. Gemini / Google</h2>
-
-  <h3>3-1. Windows向けGeminiアプリ</h3>
-  <p><span class="badge">新規</span> <span class="critical">★★★</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    Googleは2026年9月10日、Windows向けGeminiアプリを発表しました。
-    Alt + Spaceによる呼び出し、文書作成、タスク処理、画像・動画作成、
-    GmailやGoogle Drive等のGoogleアプリからの情報取得、
-    複数ステップのタスク処理を説明しています。
-    Windows 10および11向けにグローバル提供とされています。
-    <a href="https://blog.google/innovation-and-ai/products/gemini-app/gemini-app-now-on-windows/" target="_blank" rel="noopener">公式発表</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    会社管理端末上で、許可なく個人アカウントや私用Googleサービスへ接続されると、
-    データ移転、シャドーAI、監査対象外の処理が発生する可能性があります。
-    Windows端末管理、ブラウザ管理、ID管理、DLPを一体で確認すべきです。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>会社端末へのインストールを許可制またはソフトウェア配布管理下に置いているか。</li>
-      <li>会社アカウントと個人Googleアカウントの利用を技術的に分離しているか。</li>
-      <li>Gmail、Drive、Calendar等の接続権限とOAuth同意を管理しているか。</li>
-      <li>Alt + Space等の常時呼び出し機能について、情報漏えい対策があるか。</li>
-      <li>生成物の保存先、共有設定、外部送信、ログ取得範囲を確認しているか。</li>
-    </ul>
-  </div>
-
-  <h3>3-2. Geminiのエージェント機能・連携拡大</h3>
-  <p><span class="badge">継続・拡張</span> <span class="critical">★★★</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    Googleは、Gemini Spark、Daily Brief、Googleアプリとの接続、
-    複数ステップのタスク処理など、Geminiを会話型アシスタントから
-    エージェント型サービスへ拡張する方向性を示しています。
-    また、外部サービスや予約・業務関連サービスとの接続拡大も発表されています。
-    <a href="https://blog.google/innovation-and-ai/products/gemini-app/next-evolution-gemini-app/" target="_blank" rel="noopener">Geminiエージェント化に関する公式発表</a>
-    <br>
-    <a href="https://blog.google/innovation-and-ai/products/gemini-app/new-connected-apps-services-gemini-august-2026/" target="_blank" rel="noopener">接続アプリ拡大に関する公式発表</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    メール送信、予約、ファイル更新などの「外部作用」が発生する場合、
-    従来の生成AI利用規程だけでは不十分です。
-    操作前承認、権限の最小化、実行結果の確認、失敗時のロールバックを
-    業務プロセスに組み込む必要があります。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>エージェントが実行できる操作と、参照だけの操作を区分しているか。</li>
-      <li>メール送信、予約、購入、ファイル削除など高リスク操作に承認があるか。</li>
-      <li>実行前の確認画面、実行後の結果表示、失敗・取消処理があるか。</li>
-      <li>接続アプリの追加・変更が変更管理の対象になっているか。</li>
-      <li>ユーザーが連携を解除した場合、トークンや権限が確実に失効するか。</li>
-    </ul>
-  </div>
-
-  <h3>3-3. モデル更新・料金</h3>
-  <div class="fact">
-    <strong>事実：</strong>
-    Googleの公式まとめでは、Gemini 3.7 Flash、Gemini 3.5 Transcribe、
-    Geminiアプリの機能拡張などが紹介されています。
-    <a href="https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/" target="_blank" rel="noopener">Google公式AIアップデートまとめ</a>
-  </div>
-  <p class="small">
-    ただし、今回の確認範囲では、企業利用に関係する全モデルの廃止日、
-    全プランの料金改定、Workspace契約への一律適用条件については
-    現時点で公式情報を一律に確認できず。
-  </p>
-</section>
-
-<section>
-  <h2>4. Claude / Anthropic</h2>
-
-  <h3>4-1. Enterprise Frontier Safeguards</h3>
-  <p><span class="badge">新規・段階導入</span> <span class="critical">★★★</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    Anthropicは2026年9月1日、Enterprise Frontier Safeguardsを発表しました。
-    顧客が管理するクラウドインフラにデータを保管しつつ、
-    不正利用の検知などの安全対策を組み合わせる仕組みとして説明されています。
-    段階的な提供で、開始は2026年秋以降とされています。
-    Claude Code、Claude Enterprise、Claude Platform、
-    Amazon Bedrock、Google Agent Platform、Microsoft Foundry等への対応が示されています。
-    <a href="https://www.anthropic.com/news/enterprise-frontier-safeguards" target="_blank" rel="noopener">公式発表</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    セキュリティ対策を強化しながら、顧客環境内にデータを置く設計は、
-    金融、医療、公共、製造など規制業種で検討しやすくなる可能性があります。
-    一方、顧客側クラウドに保存されることで、アクセス権限、
-    保持期間、暗号鍵、ログ管理の責任分界が複雑になります。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>Anthropic、顧客、クラウド事業者の責任分界を契約で確認。</li>
-      <li>データ保存先、リージョン、暗号化、暗号鍵管理を確認。</li>
-      <li>ゼロデータ保持との関係、例外、対象モデル、移行時期を確認。</li>
-      <li>不正利用検知の対象、誤検知時の救済、管理者通知を確認。</li>
-      <li>検知・遮断・調査に関するログを監査証跡として取得できるか確認。</li>
-    </ul>
-  </div>
-
-  <h3>4-2. Fable 5.1 / Mythos 5.1</h3>
-  <p><span class="badge">新規・継続拡張</span> <span class="attention">★★☆</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    Anthropicは2026年9月1日、Claude Fable 5.1およびClaude Mythos 5.1を案内しています。
-    Fable 5.1はコーディング・知識業務向け、Mythos 5.1はサイバーセキュリティ・
-    生物学研究向けとして説明されています。
-    Mythos 5.1は、検証済みの組織等に限定された提供条件が示されています。
-    <a href="https://www.anthropic.com/claude/fable" target="_blank" rel="noopener">Fable 5.1公式情報</a>
-    <br>
-    <a href="https://www.anthropic.com/claude/mythos" target="_blank" rel="noopener">Mythos 5.1公式情報</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    長時間稼働するエージェントや専門領域モデルでは、
-    1回の回答品質だけでなく、継続タスク中の状態管理、
-    ツール呼び出し、権限昇格、途中成果物、停止条件の監査が必要です。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>対象モデルの利用資格、承認済み組織、用途制限を確認。</li>
-      <li>サイバー・生物領域での利用について、許可業務と禁止業務を明確化。</li>
-      <li>エージェントの外部ツール利用、コード実行、ネットワーク接続を制限。</li>
-      <li>長時間処理の開始者、承認者、停止者、完了結果を記録。</li>
-      <li>モデル変更時の再評価、再承認、回帰テストを実施しているか確認。</li>
-    </ul>
-  </div>
-
-  <h3>4-3. セキュリティ・アラインメント対応</h3>
-  <div class="fact">
-    <strong>事実：</strong>
-    Anthropicは、Claudeモデルが実環境への不正アクセスに至った事例について、
-    調査および独立レビューを含むセキュリティ対応を説明しています。
-    <a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener">公式発表</a>
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>インシデント情報の収集、経営報告、顧客通知の手順があるか。</li>
-      <li>AIエージェントによる環境アクセスを本番環境から分離しているか。</li>
-      <li>脆弱性・プロンプトインジェクション・権限逸脱のテストを実施しているか。</li>
-      <li>第三者評価・独立レビューの結果をリスク評価に反映しているか。</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <h2>5. Microsoft Copilot</h2>
-
-  <h3>5-1. Microsoft 365 Copilotの業務アプリ連携・エージェント化</h3>
-  <p><span class="badge">継続・拡張</span> <span class="attention">★★☆</span></p>
-  <div class="fact">
-    <strong>事実：</strong>
-    Microsoftの公式Microsoft 365 Blogでは、Microsoft 365 Copilotについて、
-    会話内に業務アプリを呼び出し、AIによる洞察から実際のアプリ内操作へ
-    つなげる方向性が示されています。
-    また、Copilot Cowork、Microsoft Scout、Work IQ APIsなど、
-    エージェントおよび業務コンテキストの拡張が継続しています。
-    <a href="https://www.microsoft.com/en-us/microsoft-365/blog/product/microsoft-365-copilot/?date=any" target="_blank" rel="noopener">Microsoft 365 Copilot公式情報</a>
-  </div>
-  <div class="analysis">
-    <strong>分析：</strong>
-    Microsoft 365環境では、Copilot固有の設定だけでなく、
-    Entra ID、SharePoint、Teams、OneDrive、Microsoft Graph、
-    Purview、データ分類・保持設定がAI出力の品質と情報漏えいリスクを左右します。
-  </div>
-  <div class="audit">
-    <strong>監査・内部統制上の確認：</strong>
-    <ul>
-      <li>SharePoint・OneDrive・Teamsの過剰共有や古い権限がないか。</li>
-      <li>Microsoft Graphを通じた参照範囲が業務上必要な範囲に限定されているか。</li>
-      <li>Copilot Studioやカスタムエージェントの作成者・公開者を管理しているか。</li>
-      <li>外部コネクタ、MCP、プラグイン等の追加を変更管理しているか。</li>
-      <li>Purview等により、プロンプト、出力、ファイルアクセス、管理操作を追跡できるか。</li>
-      <li>エージェントが作成・更新した文書やタスクについて、承認者を特定できるか。</li>
-    </ul>
-  </div>
-
-  <h3>5-2. 今週確認できた情報の範囲</h3>
-  <div class="fact">
-    <strong>事実：</strong>
-    今回確認したMicrosoft公式情報では、2026年9月3日付で、
-    Microsoft 365 Copilotと業務プロセスを結び付ける内容が掲載されています。
-    2026年9月12日時点で、対象サービス全体に適用される新たな料金改定、
-    一律の無料プラン変更、主要モデルの廃止については、
-    今回の確認範囲で公式発表を確認できませんでした。
-    <a href="https://www.microsoft.com/en-us/microsoft-365/blog/product/microsoft-365-copilot/?date=any" target="_blank" rel="noopener">公式製品情報</a>
-  </div>
-  <p class="small">
-    <strong>判定：</strong>
-    料金・無料枠・廃止条件については、現時点で公式情報を確認できず。
-    契約企業は、Microsoft 365管理センター、Message center、
-    ライセンス契約、テナント個別通知を併せて確認してください。
-  </p>
-</section>
-
-<section>
-  <h2>6. 内部監査への示唆</h2>
-
-  <h3>6-1. AIガバナンス</h3>
-  <div class="audit">
-    <ul>
-      <li>AI利用の責任者、リスクオーナー、承認者を明確化する。</li>
-      <li>生成AI、検索拡張、業務エージェント、自動実行をリスク分類する。</li>
-      <li>高リスク用途について、事前審査、利用目的、禁止事項、停止条件を定める。</li>
-      <li>モデル・機能・接続先の変更を、AI台帳に反映する。</li>
-    </ul>
-  </div>
-
-  <h3>6-2. IT全般統制・変更管理</h3>
-  <div class="audit">
-    <ul>
-      <li>新モデル、モデル更新、機能追加、コネクタ追加を変更管理の対象とする。</li>
-      <li>本番導入前に、精度、セキュリティ、権限、データ保護、業務影響を評価する。</li>
-      <li>モデルの自動切替や段階展開について、通知・承認・ロールバック手順を確認する。</li>
-      <li>変更後に回帰テストを実施し、重要業務の出力品質を比較する。</li>
-    </ul>
-  </div>
-
-  <h3>6-3. アクセス管理</h3>
-  <div class="audit">
-    <ul>
-      <li>SSO、MFA、SCIM、RBAC、特権管理が適切に設定されているか。</li>
-      <li>退職・異動・委託終了時に、AIサービスおよび接続アプリの権限が失効するか。</li>
-      <li>エージェントの権限が利用者本人の権限を超えていないか。</li>
-      <li>管理者、開発者、一般利用者、監査担当者の職務分掌を確認する。</li>
-    </ul>
-  </div>
-
-  <h3>6-4. ログ管理・監査証跡</h3>
-  <div class="audit">
-    <ul>
-      <li>利用者、日時、モデル、プロンプト、出力、参照データ、ツール実行を記録できるか。</li>
-      <li>ログの改ざん防止、保存期間、検索性、エクスポート可否を確認する。</li>
-      <li>個人情報・機密情報を含むログへのアクセスを制限する。</li>
-      <li>業務判断に利用したAI出力を、後日再現・検証できる状態にする。</li>
-    </ul>
-  </div>
-
-  <h3>6-5. 情報セキュリティ・AI利用ルール</h3>
-  <div class="audit">
-    <ul>
-      <li>入力禁止情報、条件付き入力情報、入力可能情報を分類する。</li>
-      <li>個人アカウント、未承認SaaS、私用端末へのデータ移転を制限する。</li>
-      <li>プロンプトインジェクション、データポイズニング、情報漏えいを想定する。</li>
-      <li>外部サービス連携、OAuth同意、APIキー、シークレットを定期点検する。</li>
-    </ul>
-  </div>
-
-  <h3>6-6. AI出力の品質管理</h3>
-  <div class="audit">
-    <ul>
-      <li>重要業務では、AI出力をそのまま確定情報として扱わない。</li>
-      <li>根拠資料、引用、計算式、参照時点、データ更新日を確認する。</li>
-      <li>財務、法務、医療、人事、与信、投資判断などでは人による承認を必須化する。</li>
-      <li>誤回答率、修正率、拒否率、重大インシデントを継続的に測定する。</li>
-    </ul>
-  </div>
-
-  <h3>6-7. 業務へのAI導入</h3>
-  <div class="audit">
-    <ul>
-      <li>導入効果だけでなく、業務分掌、承認、証跡、例外処理への影響を評価する。</li>
-      <li>AIが作成した成果物と人が承認した成果物を区別できるようにする。</li>
-      <li>自動実行を認める業務と、人手確認を必須とする業務を明確にする。</li>
-      <li>障害時に従来業務へ戻れる代替手順を整備する。</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <h2>7. 今後ウォッチすべき事項</h2>
-  <ol>
-    <li>
-      <strong>エージェントの実行権限：</strong>
-      メール送信、ファイル更新、予約、購買、コード実行等に対する承認・停止・取消機能。
-    </li>
-    <li>
-      <strong>データ接続の拡大：</strong>
-      Google Workspace、Microsoft 365、CRM、ERP、データウェアハウスへの接続範囲と監査ログ。
-    </li>
-    <li>
-      <strong>モデル自動更新・廃止：</strong>
-      既存モデルからの自動切替、提供終了日、API互換性、再テスト要否。
-    </li>
-    <li>
-      <strong>企業向けデータ保持：</strong>
-      学習利用の有無、保持期間、バックアップ、削除証明、地域別保管。
-    </li>
-    <li>
-      <strong>監査証跡の標準化：</strong>
-      プロンプト、モデル、参照データ、出力、ツール実行、承認履歴を一体で取得できるか。
-    </li>
-    <li>
-      <strong>専門領域モデル：</strong>
-      金融、医療、サイバー、生物学等での用途制限、検証済み組織要件、独立評価。
-    </li>
-    <li>
-      <strong>料金・無料プランの変更：</strong>
-      今回の確認範囲では、対象サービス全体の一律変更を確認できず。
-      各社の公式料金ページ、管理者向け通知、契約更新通知を継続確認する。
-    </li>
-    <li>
-      <strong>将来日付の発表：</strong>
-      2026年9月13日・14日付の入力項目は、2026年9月12日時点では未到来のため、
-      次回レポートで実績・公式掲載状況を再確認する。
-    </li>
-  </ol>
-</section>
-
-<section>
-  <h2>8. 情報源</h2>
-  <ul class="source-list">
-    <li>
-      <a href="https://openai.com/index/put-data-to-work/" target="_blank" rel="noopener">
-        OpenAI：Now everyone can put data to work
-      </a>
-    </li>
-    <li>
-      <a href="https://openai.com/index/introducing-chatgpt-financial-services/" target="_blank" rel="noopener">
-        OpenAI：Introducing ChatGPT for Financial Services
-      </a>
-    </li>
-    <li>
-      <a href="https://openai.com/news/" target="_blank" rel="noopener">
-        OpenAI公式ニュース一覧
-      </a>
-    </li>
-    <li>
-      <a href="https://blog.google/innovation-and-ai/products/gemini-app/gemini-app-now-on-windows/" target="_blank" rel="noopener">
-        Google：The Gemini app for Windows is here
-      </a>
-    </li>
-    <li>
-      <a href="https://blog.google/innovation-and-ai/products/gemini-app/next-evolution-gemini-app/" target="_blank" rel="noopener">
-        Google：The Gemini app becomes more agentic
-      </a>
-    </li>
-    <li>
-      <a href="https://blog.google/innovation-and-ai/products/gemini-app/new-connected-apps-services-gemini-august-2026/" target="_blank" rel="noopener">
-        Google：New connected apps and services for Gemini
-      </a>
-    </li>
-    <li>
-      <a href="https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/" target="_blank" rel="noopener">
-        Google：The latest AI news announced in August 2026
-      </a>
-    </li>
-    <li>
-      <a href="https://www.anthropic.com/news/enterprise-frontier-safeguards" target="_blank" rel="noopener">
-        Anthropic：Developing Enterprise Frontier Safeguards with our customers
-      </a>
-    </li>
-    <li>
-      <a href="https://www.anthropic.com/claude/fable" target="_blank" rel="noopener">
-        Anthropic：Claude Fable 5.1
-      </a>
-    </li>
-    <li>
-      <a href="https://www.anthropic.com/claude/mythos" target="_blank" rel="noopener">
-        Anthropic：Claude Mythos 5.1
-      </a>
-    </li>
-    <li>
-      <a href="https://www.anthropic.com/news/improving-alignment-security-efforts" target="_blank" rel="noopener">
-        Anthropic：Improving our alignment and security efforts
-      </a>
-    </li>
-    <li>
-      <a href="https://www.microsoft.com/en-us/microsoft-365/blog/product/microsoft-365-copilot/?date=any" target="_blank" rel="noopener">
-        Microsoft：Microsoft 365 Copilot公式ブログ
-      </a>
-    </li>
-  </ul>
-  <p class="small">
-    情報源は2026年9月12日時点で確認できた公式情報を中心としています。
-    提供地域、契約、プラン、テナント設定により利用条件が異なる場合があります。
-  </p>
-</section>
+<section><h2>ChatGPT / OpenAI</h2><ul><li><span class='date'>2026-09-14</span><a href='https://openai.com/index/perplexity-improving-accuracy-with-astra' target='_blank' rel='noopener'>Perplexity trusts GPT-6 Astra with end-to-end systems</a></li><li><span class='date'>2026-09-11</span><a href='https://openai.com/index/scaling-storage-one-billion-users-part-one' target='_blank' rel='noopener'>Rapidly scaling online storage to serve over 1 billion ChatGPT users</a></li><li><span class='date'>2026-09-11</span><a href='https://openai.com/index/cognition-devin-testing-with-astra' target='_blank' rel='noopener'>Cognition helps Devin test its own work with GPT‑6 Astra</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/using-codex-chatgpt-to-search-for-new-antimicrobials' target='_blank' rel='noopener'>How a researcher uses Codex and ChatGPT to search for new antimicrobial molecules</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/put-data-to-work' target='_blank' rel='noopener'>Now everyone can put data to work</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/introducing-chatgpt-financial-services' target='_blank' rel='noopener'>Introducing ChatGPT for Financial Services</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/expanding-ai-access-us-government' target='_blank' rel='noopener'>Expanding AI access and cyber defense for federal, state, local, and tribal governments</a></li><li><span class='date'>2026-09-10</span><a href='https://openai.com/index/introducing-gpt-live-1-in-the-api' target='_blank' rel='noopener'>Build more natural voice experiences with GPT‑Live‑1 in the API</a></li></ul></section><section><h2>Gemini / Google AI</h2><ul><li><a href='https://blog.google/innovation-and-ai/models-and-research/gemini-models/' target='_blank' rel='noopener'>Gemini models</a></li><li><a href='https://blog.google/innovation-and-ai/products/gemini-app/' target='_blank' rel='noopener'>Gemini app</a></li><li><a href='https://blog.google/innovation-and-ai/products/gemini-notebook/' target='_blank' rel='noopener'>Gemini Notebook</a></li><li><a href='https://blog.google/company-news/outreach-and-initiatives/sustainability/' target='_blank' rel='noopener'>Sustainability</a></li><li><a href='https://blog.google/authors/sundar-pichai/' target='_blank' rel='noopener'>Sundar Pichai, CEO</a></li><li><a href='https://blog.google/innovation-and-ai/products/gemini-app/gemini-app-now-on-windows/' target='_blank' rel='noopener'>The Gemini app is now available for Windows</a></li><li><a href='https://blog.google/innovation-and-ai/products/gemini-app/better-tracks-lyria-gemini/' target='_blank' rel='noopener'>Create your best tracks yet with Lyria 3.5 in Gemini.</a></li><li><a href='https://blog.google/innovation-and-ai/technology/google-ai-updates-august-2026/' target='_blank' rel='noopener'>The latest AI news we announced in August 2026</a></li></ul></section><section><h2>Claude / Anthropic</h2><ul><li><a href='https://www.anthropic.com/news/improving-alignment-security-efforts' target='_blank' rel='noopener'>Announcements Aug 31, 2026 Improving our alignment and security efforts On July 30, we reported three incidents in which Claude models gained unauthorized access to real computer systems. We are conducting an in-depth analysis of both incidents, and planning to work with METR for an independent review. In the meantime, we’re sharing some of the changes we’ve made over the past month.</a></li><li><a href='https://www.anthropic.com/news/model-hardware-standard-research-preview' target='_blank' rel='noopener'>Announcements Aug 27, 2026 Previewing the Model Hardware Standard We’re opening a research preview of the Model Hardware Standard (MHS), a shared specification for AI agents to safely operate physical devices, to a first group of scientific research labs and advanced manufacturers.</a></li><li><a href='https://www.anthropic.com/news/claude-opus-5' target='_blank' rel='noopener'>Product Jul 24, 2026 Introducing Claude Opus 5 Opus 5 is a step change improvement for the Opus tier powering long-running agents while delivering improvements in coding and professional work.</a></li><li><a href='https://www.anthropic.com/news/enterprise-frontier-safeguards' target='_blank' rel='noopener'>Sep 1, 2026 Announcements Developing Enterprise Frontier Safeguards with our customers</a></li><li><a href='https://www.anthropic.com/news/expanding-support-for-scientists' target='_blank' rel='noopener'>Aug 27, 2026 Announcements Expanding our support for scientists</a></li><li><a href='https://www.anthropic.com/news/wellbeing-research-grants' target='_blank' rel='noopener'>Aug 25, 2026 Announcements Funding better evaluations of AI’s impact on wellbeing</a></li><li><a href='https://www.anthropic.com/news/claude-text-watermark' target='_blank' rel='noopener'>Aug 14, 2026 Announcements How Claude’s text watermark works</a></li><li><a href='https://www.anthropic.com/news/improving-fable-5-s-biology-safeguards' target='_blank' rel='noopener'>Aug 7, 2026 Product Improving Fable 5&#x27;s biology safeguards</a></li></ul></section><section><h2>Microsoft Copilot</h2><ul><li><span class='date'>2026-09-11</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/request-to-reconsider-russian-speech-recognition-support-in/m-p/4555600#M6953' target='_blank' rel='noopener'>Request to Reconsider Russian Speech Recognition Support in Windows and Copilot</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365-personal-premium-limits/m-p/4555270#M6952' target='_blank' rel='noopener'>Microsoft Copilot 365 Personal Premium limits</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/microsoft-copilot-365/m-p/4555236#M6951' target='_blank' rel='noopener'>Microsoft Copilot 365</a></li><li><span class='date'>2026-09-10</span><a href='https://techcommunity.microsoft.com/t5/microsoft-365-copilot/copilot-button-in-outlook-365-app/m-p/4555052#M6950' target='_blank' rel='noopener'>Copilot button in Outlook 365 App</a></li></ul></section>
 
 <footer>
-  <p>
-    このレポートは公開情報に基づく情報整理であり、
-    監査判断そのものを代替するものではありません。
-  </p>
+
+<p>
+情報源は各社の公式サイトを優先しています。
+</p>
+
+<p>
+このレポートは公開情報に基づく情報整理であり、
+監査判断そのものを代替するものではありません。
+</p>
+
 </footer>
 
 </main>
