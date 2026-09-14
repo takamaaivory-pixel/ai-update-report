@@ -128,41 +128,67 @@ request = urllib.request.Request(
     method="POST"
 )
 
-print("Calling OpenAI API...")
+print("Calling OpenAI API...", flush=True)
 
 max_attempts = 5
 retryable_status_codes = {429, 500, 502, 503, 504, 520}
 api_timeout = 120
+max_retry_after = 300
 
 try:
     result = None
 
     for attempt in range(1, max_attempts + 1):
         try:
-            print(f"OpenAI API attempt {attempt}/{max_attempts}...")
+            print(f"OpenAI API attempt {attempt}/{max_attempts}...", flush=True)
             with urllib.request.urlopen(request, timeout=api_timeout) as response:
                 result = json.loads(response.read().decode("utf-8"))
 
-            print(f"OpenAI API request succeeded on attempt {attempt}/{max_attempts}.")
+            print(f"OpenAI API request succeeded on attempt {attempt}/{max_attempts}.", flush=True)
             break
 
         except urllib.error.HTTPError as e:
+            response_body = ""
+            try:
+                response_body = e.read().decode("utf-8", errors="replace")
+            except Exception:
+                pass
+
             if e.code not in retryable_status_codes or attempt == max_attempts:
                 raise
 
             retry_after = e.headers.get("Retry-After")
             if retry_after:
                 try:
-                    wait_seconds = max(1, int(float(retry_after)))
+                    server_wait = max(1, int(float(retry_after)))
                 except (TypeError, ValueError):
-                    wait_seconds = 30 * (2 ** (attempt - 1))
+                    server_wait = 30 * (2 ** (attempt - 1))
             else:
-                wait_seconds = 30 * (2 ** (attempt - 1))
+                server_wait = 30 * (2 ** (attempt - 1))
+
+            wait_seconds = min(server_wait, max_retry_after)
+            if server_wait > max_retry_after:
+                print(
+                    f"HTTP {e.code} requested Retry-After={server_wait}s; "
+                    f"capping wait at {max_retry_after}s.",
+                    flush=True
+                )
+
+            reason = ""
+            try:
+                error_json = json.loads(response_body)
+                reason = error_json.get("error", {}).get("code", "") or error_json.get("error", {}).get("type", "")
+            except (TypeError, ValueError, AttributeError):
+                pass
+
+            if reason:
+                print(f"OpenAI API error detail: {reason}", flush=True)
 
             print(
                 f"OpenAI API returned HTTP {e.code}. "
                 f"Retrying in {wait_seconds} seconds "
-                f"(next attempt {attempt + 1}/{max_attempts})..."
+                f"(next attempt {attempt + 1}/{max_attempts})...",
+                flush=True
             )
             time.sleep(wait_seconds)
 
