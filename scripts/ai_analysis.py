@@ -1,6 +1,8 @@
 import json
 import os
+import time
 import urllib.request
+import urllib.error
 from datetime import datetime, timezone, timedelta
 from html import escape
 
@@ -226,14 +228,31 @@ print("Calling OpenAI API...")
 
 
 try:
-    with urllib.request.urlopen(
-        request,
-        timeout=180
-    ) as response:
+    max_attempts = 5
+    for attempt in range(1, max_attempts + 1):
+        try:
+            print(f"OpenAI API attempt {attempt}/{max_attempts}...")
+            with urllib.request.urlopen(
+                request,
+                timeout=180
+            ) as response:
 
-        result = json.loads(
-            response.read().decode("utf-8")
-        )
+                result = json.loads(
+                    response.read().decode("utf-8")
+                )
+            break
+
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or attempt == max_attempts:
+                raise
+
+            wait_seconds = 30 * (2 ** (attempt - 1))
+            print(
+                f"OpenAI API returned HTTP 429. "
+                f"Retrying in {wait_seconds} seconds "
+                f"(attempt {attempt + 1}/{max_attempts})..."
+            )
+            time.sleep(wait_seconds)
 
 except Exception as e:
     raise RuntimeError(
