@@ -229,6 +229,8 @@ print("Calling OpenAI API...")
 
 try:
     max_attempts = 5
+    retryable_status_codes = {429, 500, 502, 503, 504, 520}
+
     for attempt in range(1, max_attempts + 1):
         try:
             print(f"OpenAI API attempt {attempt}/{max_attempts}...")
@@ -243,12 +245,21 @@ try:
             break
 
         except urllib.error.HTTPError as e:
-            if e.code != 429 or attempt == max_attempts:
+            if e.code not in retryable_status_codes or attempt == max_attempts:
                 raise
 
-            wait_seconds = 30 * (2 ** (attempt - 1))
+            retry_after = e.headers.get("Retry-After")
+
+            if retry_after:
+                try:
+                    wait_seconds = max(1, int(float(retry_after)))
+                except (TypeError, ValueError):
+                    wait_seconds = 30 * (2 ** (attempt - 1))
+            else:
+                wait_seconds = 30 * (2 ** (attempt - 1))
+
             print(
-                f"OpenAI API returned HTTP 429. "
+                f"OpenAI API returned HTTP {e.code}. "
                 f"Retrying in {wait_seconds} seconds "
                 f"(attempt {attempt + 1}/{max_attempts})..."
             )
