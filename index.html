@@ -5,100 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>内部監査・AIガバナンス週刊レポート (2026/09/15)</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;padding:20px;background:#f4f6f8;color:#202124;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;line-height:1.7}
-main{max-width:980px;margin:auto}
-header,section,footer{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
-h1{margin-top:0;font-size:1.8rem}h2{border-bottom:2px solid #eee;padding-bottom:8px;margin-top:0;color:#1769aa}h3{margin-bottom:6px;font-size:1.2rem}p{margin:8px 0}ul{padding-left:1.4rem}li{margin:9px 0}a{color:#1769aa;text-decoration:none}a:hover{text-decoration:underline}
-.badge{display:inline-block;border-radius:4px;padding:2px 6px;font-size:.75em;margin-right:8px;font-weight:bold;color:#fff}
-.new{background:#137333}.change{background:#8a5a00}.important{color:#b3261e;font-weight:700}
-.status{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82em;font-weight:700;white-space:nowrap}
-.unchanged{background:#f1f3f4;color:#5f6368}.updated{background:#fde7e9;color:#b3261e;border:2px solid #b3261e}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}th,td{border:1px solid #dadce0;padding:10px;vertical-align:top}th{background:#f8f9fa}
-@media(max-width:600px){body{padding:10px}header,section,footer{padding:16px}table{display:block;overflow-x:auto}}
+*{box-sizing:border-box}body{margin:0;padding:20px;background:#f4f6f8;color:#202124;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Noto Sans JP",sans-serif;line-height:1.7}main{max-width:980px;margin:auto}header,section,footer{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.08)}h1{margin-top:0;font-size:1.8rem}h2{border-bottom:2px solid #eee;padding-bottom:8px;margin-top:0;color:#1769aa}p{margin:8px 0}ul{padding-left:1.4rem}li{margin:9px 0}a{color:#1769aa;text-decoration:none}.badge{display:inline-block;border-radius:4px;padding:2px 6px;font-size:.75em;margin-right:8px;font-weight:bold;color:#fff}.new{background:#137333}.change{background:#8a5a00}.important{color:#b3261e;font-weight:700}.status{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82em;font-weight:700;white-space:nowrap}.unchanged{background:#f1f3f4;color:#5f6368}.updated{background:#fde7e9;color:#b3261e;border:2px solid #b3261e}.updated-row td{background:#fff8f8}table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}th,td{border:1px solid #dadce0;padding:10px;vertical-align:top}th{background:#f8f9fa}@media(max-width:600px){body{padding:10px}header,section,footer{padding:16px}table{display:block;overflow-x:auto}}
 </style>
 </head>
-<body>
-<main>
-<header>
-    <h1>内部監査・AIガバナンス週刊レポート</h1>
-    <p><strong>基準日：</strong>2026年9月15日</p>
-</header>
+<body><main>
+<header><h1>内部監査・AIガバナンス週刊レポート</h1><p><strong>基準日：</strong>2026年9月15日</p><p>AI・IT統制に関する最新情報を内部監査の観点から整理した週刊レポートです。</p></header>
 
-<section>
-    <h2>内部監査プロセスの高度化への有用性</h2>
-    <p>AI導入による業務環境の変化に対し、以下の工程でAIの活用を検討すべきである。</p>
-    <table>
-        <thead>
-            <tr>
-                <th>工程</th>
-                <th>今回の状況</th>
-                <th>内容</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>① リスク評価</td>
-                <td><span class="status updated">更新あり</span></td>
-                <td><strong>今回の変更点：</strong>「Troubleshooting Agent」等の自律的トラブルシューティング機能の一般提供開始により、システム環境設定が自動変更されるリスクが顕在化。→<strong>監査業務への意味：</strong>AIが実行した設定変更ログを分析し、環境変更に伴うリスクスコアを動的に再評価する必要がある。</td>
-            </tr>
-            <tr>
-                <td>② 監査計画</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：AIによって自動処理される高リスクな操作を優先的にサンプリング対象に設定する方針。</td>
-            </tr>
-            <tr>
-                <td>③ 資料収集</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：API連携を活用し、AIエージェントの利用ログや操作履歴を自動的に監査用ポータルへ収集する効率化手法。</td>
-            </tr>
-            <tr>
-                <td>④ 分析・検証</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：内部規程（ポリシー）とAI操作ログの突合を自動化し、逸脱の可能性がある事象をスクリーニングする。</td>
-            </tr>
-            <tr>
-                <td>⑤ 指摘・原因分析</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：設定変更と承認プロセスの不整合を検知し、指摘案のドラフトを構成する支援機能。</td>
-            </tr>
-            <tr>
-                <td>⑥ 報告</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：過去の監査結果から改善提案や経営層向けサマリーの構成要素を自動生成する。</td>
-            </tr>
-            <tr>
-                <td>⑦ フォローアップ</td>
-                <td><span class="status unchanged">更新なし</span></td>
-                <td>現時点で確認されている過去情報：改善後の再発防止策が、AIモデルの定期的なアップデートや挙動変化によって無効化されていないか継続監視する。</td>
-            </tr>
-        </tbody>
-    </table>
-    <p><strong>注意：</strong>上記AIによる出力は監査証拠そのものではありません。AIはあくまで監査人の判断を支援するツールであり、原資料・システムログに基づき、監査人自身による専門的な検証と確認を必ず実施してください。</p>
-</section>
+<section><h2>1. 今週の重要アップデートTOP5</h2><table><tr><th>重要度</th><th>項目</th><th>監査上の確認事項</th></tr><tr><td class="important">★★★</td><td>Azure Copilot: Troubleshooting Agent</td><td>システムログ解析・運用自動化時の権限と機密データ保護</td></tr><tr><td class="important">★★★</td><td>OpenAI: ChatGPT for Financial Services</td><td>金融規制要件、データ保持、監査証跡</td></tr><tr><td class="important">★★☆</td><td>Microsoft: CopilotへのGrok統合</td><td>マルチモデル環境での設定・データ管理の一貫性</td></tr><tr><td class="important">★★☆</td><td>Google: Gemini Windowsアプリ</td><td>端末側のアクセス制御・ログ・境界外通信</td></tr><tr><td class="important">★☆☆</td><td>AIエージェント機能の拡大</td><td>AIへの権限委譲と人間による承認・監督</td></tr></table></section>
 
-<section>
-    <h2>8. 今後ウォッチすべき事項</h2>
-    <ul>
-        <li>金融機関等の重要業務におけるAIエージェントの「操作権限」の境界線と法的責任。</li>
-        <li>AIモデルのバージョン更新による「出力の整合性」の変動を検知する継続的モニタリング手法。</li>
-    </ul>
-</section>
+<section><h2>2. ChatGPT / OpenAI</h2><ul><li><span class="badge new">新規</span><strong>ChatGPT for Financial Services</strong>：金融業務へのAI適用を想定した機能・運用が拡大。データ分離、保持、監査対応を確認する必要があります。</li><li><span class="badge change">継続</span><strong>サービス提供基盤の拡張</strong>：利用規模拡大に伴う可用性・変更管理を継続監視します。</li></ul></section>
+<section><h2>3. Gemini / Google</h2><ul><li><span class="badge new">新規</span><strong>Gemini Windowsアプリ</strong>：ブラウザ以外の利用経路が増えることで、エンドポイントでの利用制御・操作ログ・情報持ち出し管理が重要になります。</li></ul></section>
+<section><h2>4. Claude / Anthropic</h2><ul><li><span class="badge new">新規</span><strong>業務特化型ユースケースの拡大</strong>：専門業務へのAI利用では、利用目的・入力データ・出力レビューのルール整備が重要です。</li></ul></section>
+<section><h2>5. Microsoft Copilot</h2><ul><li><span class="badge new">新規</span><strong>Troubleshooting Agent</strong>：システム障害の検知・解決をAIが支援することで、ログへのアクセス権限と職務分掌の再確認が必要です。</li><li><span class="badge new">新規</span><strong>Grok統合</strong>：複数モデルを選択できる環境では、モデルごとのデータ取扱いとガバナンス設定を一元管理する必要があります。</li></ul></section>
+<section><h2>6. 内部監査への示唆</h2><p>AIが単なる文章生成から、ログ解析や業務実行を支援するエージェントへ広がっています。内部監査では「AIが何を参照し、どの権限で何を実行し、その結果を誰が承認したか」を追跡できる監査証跡が重要になります。</p></section>
 
-<section>
-    <h2>9. 情報源</h2>
-    <ul>
-        <li><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE55RjB3U1pjRUtMSUlGaGhvX0ptWFVkYlg5Rk1Fd3AtYVBEZm5UQmpVQmc1Yi1WRkFqbEVrOVFrQ2FpMVNCTDRDZDNsY1k5VHhBS1FQSjhaM2Y1aVliOC1XSW1HLW8wY1RfZWJFMDE3N3Zmdw?oc=5&hl=en-US&gl=US&ceid=US:en">OpenAI: Financial Services</a></li>
-        <li><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxOVDIzNzRDTUpFM3hvblJLcHFBX3B6YUV4OVR1Qmc5TnMwd1dfU1RleU9tdlNpb1R6NDBkRVdNX2lzX0lZd0ZER2l6UENTQkw1NEQ3N2xOOFBuLW5SWTFWMmFKdlJnc1RWdWhoaVpNWUFBU1l3Z3JQMjlYYUNOZXRHNFhOckYwR1ZUbXRpWA?oc=5&hl=en-US&gl=US&ceid=US:en">Google: Gemini Windows</a></li>
-        <li><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1sOGpwSU80bnNqZUI3ZEdjWk9xQkV5Mi1oX09uVzR5QmVrd2R1c0M1UWxMdFRUc0U1RExVbWJ1UldieEh0RU0yaWM3MDNaazRuUFFRQm5VR096VmE1SmJGSVdXZ2hXd3NDbk96OHh6VDc2aE1UMHBlV2RBZw?oc=5&hl=en-US&gl=US&ceid=US:en">Anthropic: Financial Advisors</a></li>
-        <li><a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxQVDk1V194bW5iUXlURGxyN2kzSDRsMTRzZ3RXdU42RG0taHV6LUVXYzdTalkzczZ5RVI2OFZNYWFzdkNFREVZNll6OUx6dFdWcWd2dWI2cWVyNGZCUWE5dGZlQU5tekRJcjFfbWI3eHdQRmEwM0ljbGJaNkVGZ2tMTno0MXpLTFBrblRVOC1VOHp1eXZqdHUyNURzaXpqRFd3Q3U0S0lOdDFfWGMxSjd2XzRPdWdmZDFmTTRIRHZNRU0wR1ZJbHdkX1B6LVZSc25LMTlkOQ?oc=5&hl=en-US&gl=US&ceid=US:en">Microsoft: Troubleshooting Agent</a></li>
-        <li><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNVHdjcnBJZDFPek1SSzFGNFF6eDVIdGFIWi1VZjlFVWdldVFFM0VhdEF0dEJlN2RDcnM5ajNDb2ExQW0wRG5lS0ExT0RuVm83emYyWS1NNU9HbEE5eUpXcWlNbWRMOEJrVU5yejJKSFNsczd1aFB1TjEycUJGMkFFVklmLW5iclZxZ1FRNE9FdjF5d0I5bnR1cjZQT2lZcmJneVlnMXRINlVWQVFhd1hEclJZamtxQQ?oc=5&hl=en-US&gl=US&ceid=US:en">Microsoft: Grok Integration</a></li>
-    </ul>
-</section>
+<section><h2>7. 内部監査プロセスの高度化への有用性</h2><p>今週のAIアップデートを、内部監査の7工程に対応させて定点観測します。</p><table><thead><tr><th>工程</th><th>今回の状況</th><th>内容</th></tr></thead><tbody><tr><td>① リスク評価</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：AI利用ログや業務情報を分析し、高リスクな操作・領域を抽出する活用を継続して検討します。</td></tr><tr><td>② 監査計画</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：リスクスコアに基づく監査対象・重点領域・サンプル設計へのAI活用を継続して検討します。</td></tr><tr><td>③ 資料収集</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：規程・契約・ログ等の大量資料を検索・整理し、監査証憑候補を効率的に収集する活用を継続します。</td></tr><tr class="updated-row"><td>④ 分析・検証</td><td><span class="status updated">更新あり</span></td><td><strong>今回の変更点：</strong>AIによるログ解析・トラブル対応機能の進展。<strong>監査業務への意味：</strong>システム設定値やログから異常候補を一次スクリーニングし、監査人が重要な例外の検証に集中する使い方が現実的になります。</td></tr><tr><td>⑤ 指摘・原因分析</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：類似事象の比較、原因候補の整理、指摘案のドラフト作成支援を継続して検討します。</td></tr><tr><td>⑥ 報告</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：監査結果の要約、原因、改善提案、経営層向け報告書ドラフトの作成支援を継続します。</td></tr><tr><td>⑦ フォローアップ</td><td><span class="status unchanged">更新なし</span></td><td>過去情報：改善措置の証憑と計画を照合し、期限・遅延・再発兆候を追跡する活用を継続します。</td></tr></tbody></table><p><strong>重要：</strong>AI出力は監査証拠そのものではありません。原資料・ログとの照合と、監査人による最終判断が必要です。</p></section>
 
-<footer>
-    <p>このレポートは公開情報に基づく情報整理であり、監査判断そのものを代替するものではありません。</p>
-</footer>
-</main>
-</body>
-</html>
+<section><h2>8. 今後ウォッチすべき事項</h2><ul><li>エージェントAIへの権限委譲と人間による承認・職務分掌。</li><li>複数LLM環境におけるデータ保護・プライバシー設定の統一管理。</li><li>AIモデル更新による出力品質・監査手続への影響。</li></ul></section>
+<section><h2>9. 情報源</h2><ul><li><a href="https://openai.com">OpenAI</a></li><li><a href="https://blog.google">Google AI / Google Blog</a></li><li><a href="https://www.anthropic.com">Anthropic</a></li><li><a href="https://techcommunity.microsoft.com">Microsoft Tech Community</a></li></ul></section>
+<footer><p>このレポートは公開情報に基づく情報整理であり、監査判断そのものを代替するものではありません。</p></footer>
+</main></body></html>
