@@ -136,6 +136,7 @@ request = urllib.request.Request(
 
 print("Calling Gemini API...", flush=True)
 max_attempts = 5
+retryable_statuses = {429, 500, 502, 503, 504, 520}
 result = None
 for attempt in range(1, max_attempts + 1):
     try:
@@ -152,10 +153,17 @@ for attempt in range(1, max_attempts + 1):
         except (TypeError, ValueError):
             reason = body[:500]
         print(f"Gemini API HTTP {e.code}: {reason}", flush=True)
-        if e.code != 429 or attempt == max_attempts:
+        if e.code not in retryable_statuses or attempt == max_attempts:
             raise RuntimeError(f"Gemini API request failed: HTTP {e.code}: {reason}")
-        wait_seconds = min(60 * (2 ** (attempt - 1)), 300)
-        print(f"Retrying in {wait_seconds} seconds...", flush=True)
+        retry_after = None
+        header = e.headers.get("Retry-After") if e.headers else None
+        if header:
+            try:
+                retry_after = min(max(int(header), 1), 300)
+            except ValueError:
+                pass
+        wait_seconds = retry_after if retry_after is not None else min(60 * (2 ** (attempt - 1)), 300)
+        print(f"Transient Gemini error. Retrying in {wait_seconds} seconds...", flush=True)
         time.sleep(wait_seconds)
 
 if result is None:
