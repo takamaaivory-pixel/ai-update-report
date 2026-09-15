@@ -26,11 +26,73 @@ jobs:
         run: |
           python -u scripts/ai_analysis.py
 
+      - name: Validate and protect the full report
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          required = [
+              "今週の重要アップデートTOP5",
+              "ChatGPT / OpenAI",
+              "Gemini / Google",
+              "Claude / Anthropic",
+              "Microsoft Copilot",
+              "内部監査への示唆",
+              "今後ウォッチすべき事項",
+              "情報源",
+          ]
+          html = Path("index.html").read_text(encoding="utf-8")
+          missing = [x for x in required if x not in html]
+          if missing:
+              print("AI output is incomplete; restoring the last known complete report.")
+              print("Missing:", ", ".join(missing))
+              raise SystemExit(2)
+          print("Full report structure validated.")
+          PY
+
+      - name: Restore known-good report if validation failed
+        if: failure()
+        shell: bash
+        run: |
+          git show 9d02d83:index.html > index.html
+          echo "Restored known-good complete report from commit 9d02d83."
+
       - name: Update fixed seven-stage audit section
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python -u scripts/audit_process_section.py
+
+      - name: Validate seven-stage audit section and full report
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html = Path("index.html").read_text(encoding="utf-8")
+          required = [
+              "今週の重要アップデートTOP5",
+              "ChatGPT / OpenAI",
+              "Gemini / Google",
+              "Claude / Anthropic",
+              "Microsoft Copilot",
+              "内部監査への示唆",
+              "内部監査プロセスの高度化への有用性",
+              "今後ウォッチすべき事項",
+              "情報源",
+              "① リスク評価",
+              "② 監査計画",
+              "③ 資料収集",
+              "④ 分析・検証",
+              "⑤ 指摘・原因分析",
+              "⑥ 報告",
+              "⑦ フォローアップ",
+          ]
+          missing = [x for x in required if x not in html]
+          statuses = html.count("更新あり") + html.count("更新なし")
+          if missing or statuses < 7:
+              raise SystemExit("Final report validation failed: " + ", ".join(missing) + f"; statuses={statuses}")
+          print("Final report validation passed: full report + seven audit stages present.")
+          PY
 
       - name: Commit report
         run: |
