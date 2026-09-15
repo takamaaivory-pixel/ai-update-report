@@ -26,7 +26,8 @@ jobs:
         run: |
           python -u scripts/ai_analysis.py
 
-      - name: Validate and protect the full report
+      - name: Validate AI report structure
+        id: validate_ai
         shell: bash
         run: |
           python - <<'PY'
@@ -44,18 +45,18 @@ jobs:
           html = Path("index.html").read_text(encoding="utf-8")
           missing = [x for x in required if x not in html]
           if missing:
-              print("AI output is incomplete; restoring the last known complete report.")
+              print("AI output is incomplete; the verified baseline will be restored.")
               print("Missing:", ", ".join(missing))
               raise SystemExit(2)
-          print("Full report structure validated.")
+          print("AI report structure validated.")
           PY
 
-      - name: Restore known-good report if validation failed
+      - name: Restore verified complete report baseline
         if: failure()
         shell: bash
         run: |
-          git show 9d02d83:index.html > index.html
-          echo "Restored known-good complete report from commit 9d02d83."
+          git show e963101ffc54fdb3629074f5d7c4cc4717a5788a:index.html > index.html
+          echo "Restored verified complete report from commit e963101."
 
       - name: Update fixed seven-stage audit section
         env:
