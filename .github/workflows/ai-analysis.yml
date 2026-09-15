@@ -23,7 +23,7 @@ jobs:
       - name: Run AI analysis
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python -u scripts/ai_analysis.py
+        run: python -u scripts/ai_analysis_v2.py
 
       - name: Commit report
         run: |
@@ -35,6 +35,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Generate AI analyzed weekly report"
+            git commit -m "Generate evidence-backed AI weekly report"
             git push
           fi
