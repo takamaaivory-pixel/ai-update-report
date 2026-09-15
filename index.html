@@ -11,7 +11,7 @@
 <body><main>
 <header><h1>内部監査・AIガバナンス週刊レポート</h1><p><strong>基準日：</strong>2026年9月15日</p><p>AI・IT統制に関する最新情報を内部監査の観点から整理した週刊レポートです。</p></header>
 
-<section><h2>1. 今週の重要アップデートTOP5</h2><table><tr><th>重要度</th><th>項目</th><th>監査上の確認事項</th></tr><tr><td class="important">★★★</td><td>Azure: Troubleshooting Agent一般提供</td><td>AIによるシステム自動修復時のログ取得と権限承認プロセスの妥当性</td></tr><tr><td class="important">★★★</td><td>OpenAI: GPT-6 Astra発表</td><td>次世代モデルにおけるデータプライバシーとガバナンス適合性</td></tr><tr><td class="important">★★☆</td><td>Anthropic: Claude Fable/Mythos 5.1</td><td>新モデル採用に伴うAIアライメント評価と出力品質管理の再設計</td></tr><tr><td class="important">★★☆</td><td>Microsoft: CopilotへのGrok統合</td><td>マルチモデル利用時におけるデータポリシーの統合管理</td></tr><tr><td class="important">★☆☆</td><td>OpenAI: Financial Services向け機能</td><td>金融規制対応のためのデータ保持・利用設定の監査</td></tr></table></section>
+<section><h2>1. 今週の重要アップデートTOP5</h2><table><tr><th>重要度</th><th>項目</th><th>監査上の確認事項</th></tr><tr><td class="important">★★★</td><td>Azure Copilot: Troubleshooting Agent一般提供</td><td>AIによるシステム自動修復時のログ取得と権限承認プロセスの妥当性</td></tr><tr><td class="important">★★★</td><td>OpenAI: GPT-6 Astra発表</td><td>次世代モデルにおけるデータプライバシーとガバナンス適合性</td></tr><tr><td class="important">★★☆</td><td>Anthropic: Claude Fable/Mythos 5.1</td><td>新モデル採用に伴うAIアライメント評価と出力品質管理の再設計</td></tr><tr><td class="important">★★☆</td><td>Microsoft: CopilotへのGrok統合</td><td>マルチモデル利用時におけるデータポリシーの統合管理</td></tr><tr><td class="important">★☆☆</td><td>OpenAI: Financial Services向け機能</td><td>金融規制対応のためのデータ保持・利用設定の監査</td></tr></table></section>
 
 <section><h2>2. ChatGPT / OpenAI</h2><ul><li><span class="badge new">新規</span><strong>GPT-6 Astra</strong>：次世代モデルの発表。企業導入にあたっては、先行モデルと異なる挙動・精度に対するリスク評価と、情報セキュリティ規程の更新が必要。</li><li><span class="badge change">変更</span><strong>Work Modeのエラー</strong>：9月14日に発生したエラーにより、AIへの業務依存度が高いプロセスにおける「代替手段（BCP）」の有効性確認が求められる。</li><li><span class="badge new">新規</span><strong>Financial Services向け機能</strong>：金融特有のコンプライアンス要件に対応するとしており、導入時にはデータ保存場所やアクセス制御の検証が重要。</li></ul></section>
 
@@ -52,12 +52,12 @@
         <tr class="updated-row">
             <td>④ 分析・検証</td>
             <td><span class="status updated">更新あり</span></td>
-            <td><strong>今回の変更点：</strong>Azure Troubleshooting Agent等によるシステム自動操作の実装。<strong>監査業務への意味：</strong>AIが実行した「システム設定変更」を伴う操作ログを監査対象とし、AIがスクリーニングした事象の妥当性を監査人が評価する二段階検証プロセスを強化します。</td>
+            <td><strong>今回の変更点：</strong>Azure Troubleshooting Agentによる自律的なシステム設定変更の導入。<br><strong>監査業務への意味：</strong>AIが実行した「設定変更プロセス」のログと実行根拠となるプロンプトを検証対象とし、AIの判断ロジックが妥当か、監査人が判断材料として活用・評価するプロセスを構築します。</td>
         </tr>
         <tr class="updated-row">
             <td>⑤ 指摘・原因分析</td>
             <td><span class="status updated">更新あり</span></td>
-            <td><strong>今回の変更点：</strong>マルチモデル環境におけるガバナンス設定の複雑化。<strong>監査業務への意味：</strong>AIが提示する「根本原因の候補」に対し、モデルごとの特性（学習可否設定等）と照らし合わせ、不備がモデルの挙動に起因するものか、運用ルールに起因するものかを監査人が論理的に峻別します。</td>
+            <td><strong>今回の変更点：</strong>Grok等のマルチモデル統合環境による設定不整合のリスク増加。<br><strong>監査業務への意味：</strong>複数のAIモデル間で異なるデータ保持規約や学習設定に起因する不整合に対し、モデルごとの特性をAIで分類・可視化し、監査人が原因の特定速度を高めるための判断支援ツールとして活用します。</td>
         </tr>
         <tr class="unchanged">
             <td>⑥ 報告</td>
@@ -71,7 +71,7 @@
         </tr>
     </tbody>
 </table>
-<p><strong>注意：</strong>AI出力は監査証拠そのものではありません。AIが抽出した結果の根拠となる原資料・ログの確認、および判断者（監査人）による専門的な検証が不可欠です。</p>
+<p><strong>注意：</strong>AIの出力は監査証拠そのものではなく、ヒントや補助的な分析に留まります。監査人は必ず原資料（システムログ・原文等）を突き合わせ、自らの専門的判断に基づいて検証を行う必要があります。AIによる監査判断の代替は認められません。</p>
 </section>
 
 <section><h2>8. 今後ウォッチすべき事項</h2><ul><li>AIの自律的なシステム変更権限に対する「ガバナンスのガードレール」の有効性。</li><li>マルチモデル（Grok等）導入時における、モデル個別のセキュリティ設定の一元管理ツール。</li><li>AIによる異常検知の誤検知率（False Positive）が監査品質に与える影響。</li></ul></section>
