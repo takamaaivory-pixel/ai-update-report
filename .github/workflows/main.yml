@@ -16,23 +16,70 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Backup current full report
+        shell: bash
+        run: cp index.html index.html.backup
+
       - name: Generate AI update report
         shell: bash
+        run: python -u scripts/ai_analysis.py
+
+      - name: Protect full report from partial AI output
+        shell: bash
         run: |
-          python -u scripts/ai_analysis.py
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          backup = Path("index.html.backup").read_text(encoding="utf-8")
+          generated = Path("index.html").read_text(encoding="utf-8")
+          required = [
+              "今週の重要アップデートTOP5", "ChatGPT / OpenAI", "Gemini / Google",
+              "Claude / Anthropic", "Microsoft Copilot", "内部監査への示唆",
+              "内部監査プロセスの高度化への有用性", "今後ウォッチすべき事項", "情報源",
+          ]
+          missing = [x for x in required if x not in generated]
+          if not missing:
+              print("AI output contains the complete report structure.")
+          else:
+              print("AI output is partial. Missing:", ", ".join(missing))
+              match = re.search(r'(<section[^>]*>\s*<h2>\s*7\.\s*内部監査プロセスの高度化への有用性\s*</h2>.*?</section>)', generated, re.S)
+              if match:
+                  section7 = match.group(1)
+                  restored = re.sub(r'<section[^>]*>\s*<h2>\s*7\.\s*内部監査プロセスの高度化への有用性\s*</h2>.*?</section>', section7, backup, count=1, flags=re.S)
+                  Path("index.html").write_text(restored, encoding="utf-8")
+                  print("Restored previous full report and kept newly generated section 7.")
+              else:
+                  Path("index.html").write_text(backup, encoding="utf-8")
+                  print("No usable section 7 found; restored previous full report unchanged.")
+          PY
 
       - name: Update fixed audit process section
         shell: bash
+        run: python -u scripts/audit_process_section.py
+
+      - name: Validate final report
+        shell: bash
         run: |
-          python -u scripts/audit_process_section.py
+          python - <<'PY'
+          from pathlib import Path
+          html = Path("index.html").read_text(encoding="utf-8")
+          required = [
+              "今週の重要アップデートTOP5", "ChatGPT / OpenAI", "Gemini / Google",
+              "Claude / Anthropic", "Microsoft Copilot", "内部監査への示唆",
+              "内部監査プロセスの高度化への有用性", "今後ウォッチすべき事項", "情報源",
+          ]
+          missing = [x for x in required if x not in html]
+          statuses = html.count("更新あり") + html.count("更新なし")
+          if missing or statuses < 7:
+              raise SystemExit(f"Final report validation failed: missing={missing}; statuses={statuses}")
+          print(f"Final report validation passed: all sections present; statuses={statuses}")
+          PY
 
       - name: Commit and publish
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add index.html
-
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
