@@ -21,7 +21,7 @@ def read(path):
 def previous_html():
     try:
         return subprocess.check_output(
-            ["git", "show", "HEAD~1:index.html"], stderr=subprocess.DEVNULL
+            ["git", "show", "HEAD:index.html"], stderr=subprocess.DEVNULL
         ).decode("utf-8", errors="ignore")
     except Exception:
         return ""
@@ -30,15 +30,9 @@ def previous_html():
 def extract_audit_section(html):
     if not html:
         return ""
-    patterns = [
-        r"(<section[^>]*>.*?内部監査プロセスの高度化への有用性.*?</section>)",
-        r"(<article[^>]*>.*?内部監査プロセスの高度化への有用性.*?</article>)",
-    ]
-    for pattern in patterns:
-        m = re.search(pattern, html, re.I | re.S)
-        if m:
-            return m.group(1)
-    return ""
+    pattern = r"(<section[^>]*>\s*<h2>\s*7\.\s*内部監査プロセスの高度化への有用性\s*</h2>.*?</section>)"
+    m = re.search(pattern, html, re.I | re.S)
+    return m.group(1) if m else ""
 
 
 def has_main_report(html):
@@ -49,6 +43,7 @@ def has_main_report(html):
         "Claude / Anthropic",
         "Microsoft Copilot",
         "内部監査への示唆",
+        "内部監査プロセスの高度化への有用性",
         "今後ウォッチすべき事項",
         "情報源",
     ]
@@ -95,32 +90,24 @@ def call_gemini(prompt):
 
 
 current = read("index.html")
-previous = previous_html()
-
-# Gemini can occasionally return only the tail of a long HTML document.
-# Never let that truncate the established weekly report. If the current output
-# is missing the main report sections, keep the previous complete report as the
-# base and update only the fixed audit-process section below.
-if has_main_report(current):
-    base_html = current
-    print("Current AI report contains the main sections; using it as the base.", flush=True)
-elif has_main_report(previous):
-    base_html = previous
-    print("Current AI report is incomplete; preserving the previous complete report.", flush=True)
+base_html = current
+if not has_main_report(base_html):
+    previous = previous_html()
+    if has_main_report(previous):
+        base_html = previous
+        print("Current report is incomplete; preserving the previous complete report.", flush=True)
+    else:
+        raise RuntimeError("Current and previous index.html are both incomplete.")
 else:
-    raise RuntimeError("Neither current nor previous index.html contains the complete weekly report.")
+    print("Current report contains all nine main sections; preserving it as the base.", flush=True)
 
-previous_section = extract_audit_section(previous)
+previous_section = extract_audit_section(previous_html())
 
 prompt = f"""
 あなたは内部監査・IT統制・AIガバナンスの編集者です。
-現在生成された週刊AIレポートの中にある「内部監査プロセスの高度化への有用性」セクションだけを再構成してください。
+現在の週刊AIレポートにある「内部監査プロセスの高度化への有用性」セクションだけを再構成してください。
 
-【絶対条件】
-監査7工程を常設の7行として、必ず①～⑦すべて表示してください。更新がない工程も絶対に省略しません。
-番号が飛ぶと、7工程を知らない読者には「工程の抜け漏れ」と誤解されるためです。
-
-7工程は固定です。
+絶対条件：監査7工程を必ず①～⑦すべて表示。更新なしも省略しない。
 ① リスク評価
 ② 監査計画
 ③ 資料収集
@@ -129,65 +116,42 @@ prompt = f"""
 ⑥ 報告
 ⑦ フォローアップ
 
-【各行の判定】
-- 今回のレポート内容と前回の同セクションを比較し、今回その工程に新しいAIアップデートによる具体的な変化・有用性がある場合は「更新あり」とする。
-- それ以外は必ず「更新なし」とする。
-- 「更新なし」でも、その工程について前回までに確認されている有用性・注意点などの過去情報を簡潔に残す。
-- 「更新あり」は強調表示する。HTMLでは class="updated" を使うこと。
-- 「更新なし」は class="unchanged" を使うこと。
-- 更新の判定は、単なる言い換えや同じ情報の再掲ではなく、今回新たに確認された機能・変更・運用上の意味に基づく。
-- AIに監査判断を任せるという表現は禁止。監査人の判断を支援する位置付けにする。
-- 更新ありでも、根拠が今回のレポートにない場合は「更新なし」にする。
+今回のレポートと前回セクションを比較し、新しいAIアップデートによる具体的な変化がある工程だけ「更新あり」、それ以外は「更新なし」。
+更新なしでも過去情報を残す。更新ありは class="updated"、更新なしは class="unchanged" を使う。
+更新ありの内容は「今回の変更点→監査業務への意味」を具体的に記載する。
+AIに監査判断を任せる表現は禁止し、監査人の判断を支援する位置付けにする。
 
-【表示形式】
-HTMLの <section> として返してください。外部CSSは禁止です。
-見出しは「内部監査プロセスの高度化への有用性」としてください。
-7工程を表形式で、最低限次の列を持たせてください。
-「工程」「今回の状況」「内容」
+HTMLの <section> として返す。見出しは「7. 内部監査プロセスの高度化への有用性」。
+表の列は「工程」「今回の状況」「内容」。最後にAI出力は監査証拠そのものではなく、原資料・ログ・判断者による検証が必要との注意書きを付ける。
 
-「今回の状況」は、更新ありなら <span class="status updated">更新あり</span>、更新なしなら <span class="status unchanged">更新なし</span> としてください。
-更新ありの行には「今回の変更点→監査業務への意味」を具体的に記載してください。
-更新なしの行には「現時点で確認されている過去情報」を記載してください。
-最後に短い注意書きとして、AI出力は監査証拠そのものではなく、原資料・ログ・判断者による検証が必要であることを記載してください。
-
-【今回のレポート】
+【今回の完全レポート】
 {base_html}
 
-【前回レポートの同セクション】
-{previous_section or '(前回セクションなし)'}
+【前回の同セクション】
+{previous_section or '(なし)'}
 
-HTML以外は返さないでください。
+HTML以外は返さない。
 """
 
 section = call_gemini(prompt)
-if section.startswith("```"):
-    section = re.sub(r"^```(?:html)?\s*", "", section, flags=re.I)
-    section = re.sub(r"\s*```$", "", section)
-section = section.strip()
+section = re.sub(r"^```(?:html)?\s*", "", section, flags=re.I)
+section = re.sub(r"\s*```$", "", section).strip()
 
-if "内部監査プロセスの高度化への有用性" not in section or section.count("リスク評価") < 1:
-    raise RuntimeError("Generated audit section is missing required content.")
-
+if "内部監査プロセスの高度化への有用性" not in section:
+    raise RuntimeError("Generated audit section is missing required heading.")
 if section.count("更新なし") + section.count("更新あり") < 7:
     raise RuntimeError("Generated audit section does not contain all seven status entries.")
 
-patterns = [
-    r"<section[^>]*>.*?内部監査プロセスの高度化への有用性.*?</section>",
-    r"<article[^>]*>.*?内部監査プロセスの高度化への有用性.*?</article>",
-]
-new_html = base_html
-for pattern in patterns:
-    if re.search(pattern, new_html, re.I | re.S):
-        new_html = re.sub(pattern, section, new_html, count=1, flags=re.I | re.S)
-        break
-else:
-    marker = re.search(r"<section[^>]*>.*?(今後ウォッチすべき事項|ウォッチすべき事項).*?</section>", new_html, re.I | re.S)
-    if marker:
-        new_html = new_html[:marker.start()] + section + "\n" + new_html[marker.start():]
-    else:
-        new_html = new_html.replace("</main>", section + "\n</main>", 1)
+section_pattern = r"<section[^>]*>\s*<h2>\s*7\.\s*内部監査プロセスの高度化への有用性\s*</h2>.*?</section>"
+if not re.search(section_pattern, base_html, re.I | re.S):
+    raise RuntimeError("Existing report does not contain the fixed audit section to replace.")
+
+new_html = re.sub(section_pattern, section, base_html, count=1, flags=re.I | re.S)
+
+if not has_main_report(new_html):
+    raise RuntimeError("Audit-section replacement damaged the main report structure.")
 
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(new_html)
 
-print("Persistent seven-stage audit process section updated successfully.", flush=True)
+print("Persistent seven-stage audit process section updated successfully without replacing other sections.", flush=True)
