@@ -15,31 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Generate AI update report
+      - name: Generate AI update report safely
         shell: bash
-        run: python -u scripts/ai_analysis.py
-
-      - name: Protect report from partial AI output
-        shell: bash
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-          baseline = Path('templates/baseline_index.html').read_text(encoding='utf-8')
-          generated = Path('index.html').read_text(encoding='utf-8')
-          required = [
-              '今週の重要アップデートTOP5','ChatGPT / OpenAI','Gemini / Google',
-              'Claude / Anthropic','Microsoft Copilot','内部監査への示唆',
-              '内部監査プロセスの高度化への有用性','今後ウォッチすべき事項','情報源'
-          ]
-          missing = [x for x in required if x not in generated]
-          if missing:
-              print('AI output is incomplete; restoring verified baseline.')
-              print('Missing:', ', '.join(missing))
-              Path('index.html').write_text(baseline, encoding='utf-8')
-          else:
-              print('AI output contains the complete report structure.')
-          PY
+        run: python -u scripts/ai_analysis_safe.py
 
       - name: Update fixed audit process section
         shell: bash
@@ -54,13 +32,15 @@ jobs:
           required = [
               '今週の重要アップデートTOP5','ChatGPT / OpenAI','Gemini / Google',
               'Claude / Anthropic','Microsoft Copilot','内部監査への示唆',
-              '内部監査プロセスの高度化への有用性','今後ウォッチすべき事項','情報源'
+              '内部監査プロセスの高度化への有用性','今後ウォッチすべき事項','情報源',
+              '① リスク評価','② 監査計画','③ 資料収集','④ 分析・検証',
+              '⑤ 指摘・原因分析','⑥ 報告','⑦ フォローアップ'
           ]
           missing = [x for x in required if x not in html]
           statuses = html.count('更新あり') + html.count('更新なし')
           if missing or statuses < 7:
               raise SystemExit(f'Final report validation failed: missing={missing}; statuses={statuses}')
-          print(f'Final report validation passed: all sections present; statuses={statuses}')
+          print(f'Final report validation passed: all sections and audit steps present; statuses={statuses}')
           PY
 
       - name: Commit and publish
