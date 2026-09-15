@@ -5,7 +5,7 @@ import urllib.request
 import urllib.error
 from datetime import datetime, timezone, timedelta
 
-API_KEY = os.environ.get("GEMINI_API_KEY")
+API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
 
 if not API_KEY:
     raise RuntimeError("GEMINI_API_KEY is not set.")
