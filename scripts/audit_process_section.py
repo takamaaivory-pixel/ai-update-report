@@ -41,6 +41,20 @@ def extract_audit_section(html):
     return ""
 
 
+def has_main_report(html):
+    required = [
+        "今週の重要アップデートTOP5",
+        "ChatGPT / OpenAI",
+        "Gemini / Google",
+        "Claude / Anthropic",
+        "Microsoft Copilot",
+        "内部監査への示唆",
+        "今後ウォッチすべき事項",
+        "情報源",
+    ]
+    return bool(html) and all(text in html for text in required)
+
+
 def call_gemini(prompt):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent"
     payload = {"contents": [{"parts": [{"text": prompt}]}]}
@@ -82,6 +96,20 @@ def call_gemini(prompt):
 
 current = read("index.html")
 previous = previous_html()
+
+# Gemini can occasionally return only the tail of a long HTML document.
+# Never let that truncate the established weekly report. If the current output
+# is missing the main report sections, keep the previous complete report as the
+# base and update only the fixed audit-process section below.
+if has_main_report(current):
+    base_html = current
+    print("Current AI report contains the main sections; using it as the base.", flush=True)
+elif has_main_report(previous):
+    base_html = previous
+    print("Current AI report is incomplete; preserving the previous complete report.", flush=True)
+else:
+    raise RuntimeError("Neither current nor previous index.html contains the complete weekly report.")
+
 previous_section = extract_audit_section(previous)
 
 prompt = f"""
@@ -122,8 +150,8 @@ HTMLの <section> として返してください。外部CSSは禁止です。
 更新なしの行には「現時点で確認されている過去情報」を記載してください。
 最後に短い注意書きとして、AI出力は監査証拠そのものではなく、原資料・ログ・判断者による検証が必要であることを記載してください。
 
-【現在のレポート】
-{current}
+【今回のレポート】
+{base_html}
 
 【前回レポートの同セクション】
 {previous_section or '(前回セクションなし)'}
@@ -140,12 +168,14 @@ section = section.strip()
 if "内部監査プロセスの高度化への有用性" not in section or section.count("リスク評価") < 1:
     raise RuntimeError("Generated audit section is missing required content.")
 
-# Replace the existing audit-process section when present; otherwise insert before the watch-list section.
+if section.count("更新なし") + section.count("更新あり") < 7:
+    raise RuntimeError("Generated audit section does not contain all seven status entries.")
+
 patterns = [
     r"<section[^>]*>.*?内部監査プロセスの高度化への有用性.*?</section>",
     r"<article[^>]*>.*?内部監査プロセスの高度化への有用性.*?</article>",
 ]
-new_html = current
+new_html = base_html
 for pattern in patterns:
     if re.search(pattern, new_html, re.I | re.S):
         new_html = re.sub(pattern, section, new_html, count=1, flags=re.I | re.S)
