@@ -3,6 +3,8 @@ import os
 import time
 import urllib.request
 import urllib.error
+import urllib.parse
+import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 
 API_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
@@ -23,6 +25,39 @@ def read_file(path):
         return ""
 
 
+def fetch_news(query, limit=5):
+    """Fetch a small amount of current public news context without a paid search API."""
+    params = urllib.parse.urlencode({
+        "q": f"{query} when:7d",
+        "hl": "en-US",
+        "gl": "US",
+        "ceid": "US:en",
+    })
+    url = f"https://news.google.com/rss/search?{params}"
+    try:
+        request = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0"},
+            method="GET",
+        )
+        with urllib.request.urlopen(request, timeout=20) as response:
+            root = ET.fromstring(response.read())
+
+        items = []
+        for item in root.findall("./channel/item")[:limit]:
+            title = (item.findtext("title") or "").strip()
+            link = (item.findtext("link") or "").strip()
+            pub_date = (item.findtext("pubDate") or "").strip()
+            source = item.find("source")
+            source_name = (source.text or "").strip() if source is not None else ""
+            if title:
+                items.append(f"- {title} | {source_name} | {pub_date} | {link}")
+        return "\n".join(items) or "(No recent items found.)"
+    except Exception as e:
+        print(f"News context fetch failed for {query}: {e}", flush=True)
+        return "(News context unavailable.)"
+
+
 current_html = read_file("index.html")
 if not current_html:
     raise RuntimeError("index.html was not found.")
@@ -31,6 +66,13 @@ try:
     previous_html = os.popen("git show HEAD~1:index.html 2>/dev/null").read()
 except Exception:
     previous_html = ""
+
+news_context = "\n\n".join([
+    "### ChatGPT / OpenAI\n" + fetch_news("OpenAI ChatGPT"),
+    "### Gemini / Google\n" + fetch_news("Google Gemini AI"),
+    "### Claude / Anthropic\n" + fetch_news("Anthropic Claude AI"),
+    "### Microsoft Copilot\n" + fetch_news("Microsoft Copilot AI"),
+])
 
 prompt = f"""
 あなたは企業の内部監査・IT統制・AIガバナンスを担当する専門家です。
@@ -41,14 +83,14 @@ prompt = f"""
 目的は単なるAIニュースまとめではなく、内部監査担当者が「何を確認すべきか」を把握できる実務向けレポートです。
 
 重要ルール:
-1. Google検索を使って最新の公開情報を確認してください。
-2. 公式情報・一次情報を最優先してください。
+1. 下記の「直近7日間の公開ニュース候補」を最新情報の手掛かりとして使ってください。
+2. 公式情報・一次情報を最優先してください。ニュース候補だけで断定せず、公式情報が確認できない事項は「現時点で公式情報を確認できず」と明記してください。
 3. 事実と分析・意見を明確に分けてください。
 4. 存在を確認できないモデル名・機能名・料金・提供条件などを推測しないでください。
-5. 確認できない情報は「現時点で公式情報を確認できず」と明記してください。
-6. 前回レポートとの差分を重視してください。
-7. 各重要アップデートを、新規・変更・継続・終了の可能な範囲で判定してください。
-8. 各重要アップデートに重要度を付けてください。★★★ 重要 / ★★☆ 注目 / ★☆☆ 参考
+5. 前回レポートとの差分を重視してください。
+6. 各重要アップデートを、新規・変更・継続・終了の可能な範囲で判定してください。
+7. 各重要アップデートに重要度を付けてください。★★★ 重要 / ★★☆ 注目 / ★☆☆ 参考
+8. 情報源リンクは、ニュース候補に含まれるURLや、確実に存在すると判断できる公式ページだけを使ってください。URLを創作しないでください。
 
 重点項目:
 ・新モデル ・モデル更新 ・モデル廃止 ・新機能 ・機能変更
@@ -84,6 +126,9 @@ HTML要件:
 今回の基準日: {report_date}
 レポート本文の基準日は必ずこの日付を使用し、過去HTMLの日付を再利用しないでください。
 
+直近7日間の公開ニュース候補:
+{news_context}
+
 前回レポート:
 {previous_html}
 
@@ -91,13 +136,14 @@ HTML要件:
 {current_html}
 """
 
-# Gemini 2.5 Flash has a current Free Tier and supports Google Search grounding.
-model = "gemini-2.5-flash"
+# Gemini 3.1 Flash-Lite is a current stable model with Free Tier input/output.
+# Google Search grounding is not included here because it is not available in the Free Tier.
+# Instead, the workflow supplies fresh Google News RSS context without using a paid search API.
+model = "gemini-3.1-flash-lite"
 url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 
 payload = {
-    "contents": [{"parts": [{"text": prompt}]}],
-    "tools": [{"google_search": {}}]
+    "contents": [{"parts": [{"text": prompt}]}]
 }
 
 request = urllib.request.Request(
@@ -149,7 +195,11 @@ if result is None:
     raise RuntimeError("Gemini API returned no result.")
 
 try:
-    output = result["candidates"][0]["content"]["parts"][0]["text"].strip()
+    output = "".join(
+        part.get("text", "")
+        for part in result["candidates"][0]["content"]["parts"]
+        if isinstance(part, dict)
+    ).strip()
 except (KeyError, IndexError, TypeError) as e:
     raise RuntimeError("Gemini API response did not contain generated text: " + str(e))
 
