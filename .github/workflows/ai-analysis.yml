@@ -20,11 +20,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Run AI analysis
+      - name: Generate complete AI report
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python -u scripts/ai_analysis_v2.py
+          python -u scripts/ai_analysis.py
+
+      - name: Update fixed seven-stage audit section
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
           python -u scripts/audit_process_section.py
 
       - name: Commit report
@@ -37,6 +42,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Generate evidence-backed AI weekly report"
+            git commit -m "Generate complete AI weekly report"
             git push
           fi
