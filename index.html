@@ -11,7 +11,7 @@ main{max-width:980px;margin:auto}
 header,section,footer{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
 h1{margin-top:0;font-size:1.8rem}h2{border-bottom:2px solid #eee;padding-bottom:8px;margin-top:0;color:#1769aa}h3{margin-bottom:6px;font-size:1.2rem}p{margin:8px 0}ul{padding-left:1.4rem}li{margin:9px 0}a{color:#1769aa;text-decoration:none}a:hover{text-decoration:underline}
 .badge{display:inline-block;border-radius:4px;padding:2px 6px;font-size:.75em;margin-right:8px;font-weight:bold;color:#fff}.new{background:#137333}.change{background:#8a5a00}.important{color:#b3261e;font-weight:700}
-.status{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82em;font-weight:700;white-space:nowrap}.unchanged{background:#f1f3f4;color:#5f6368}.updated{background:#fde7e9;color:#b3261e;border:2px solid #b3261e;box-shadow:0 0 0 2px #fff,0 0 0 4px #f8b4b8}.updated-row td{background:#fff8f8}.updated-row td:first-child{font-weight:700;border-left:5px solid #b3261e}
+.status{display:inline-block;border-radius:999px;padding:3px 10px;font-size:.82em;font-weight:700;white-space:nowrap}.unchanged{background:#f1f3f4;color:#5f6368}.updated{background:#fde7e9;color:#b3261e;border:2px solid #b3261e;box-shadow:0 0 0 2px #fff,0 0 0 4px #f8b4b8}
 table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}th,td{border:1px solid #dadce0;padding:10px;vertical-align:top}th{background:#f8f9fa}
 @media(max-width:600px){body{padding:10px}header,section,footer{padding:16px}table{display:block;overflow-x:auto}}
 </style>
@@ -22,6 +22,7 @@ table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}th,td{bor
 
 <section>
   <h2>内部監査プロセスの高度化への有用性</h2>
+  <p>AIエージェントによる業務介入や業界特化型モデルの導入が進む中、監査手続きにおいてもAIを活用し、高度化を図ることが不可欠です。以下に監査各工程における有用性を示します。</p>
   <table>
     <thead>
       <tr>
@@ -34,54 +35,56 @@ table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.9em}th,td{bor
       <tr>
         <td>① リスク評価</td>
         <td><span class="status updated">更新あり</span></td>
-        <td>今回の変更点：Troubleshooting Agent等の自律的エージェントによる設定変更ログを監視対象とすることで、自動化領域における新たなリスク評価の視点を提供します。</td>
+        <td>今回の変更点→監査業務への意味：Troubleshooting Agent等のAIエージェント利用により、自律的なシステム変更リスクが新たに発生。AIの「自律度」を基準としたリスク評価項目を追加し、高リスク部署の優先順位付けを精緻化する。</td>
       </tr>
       <tr>
         <td>② 監査計画</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：AIによる異常検知結果やデータの偏りを分析し、監査対象の重点領域を動的に選定する手法が有効です。</td>
+        <td>現時点で確認されている過去情報：AIが自動生成した設定変更ログや業務ログを、母集団からサンプリング対象として自動的に抽出する計画を策定する。</td>
       </tr>
       <tr>
         <td>③ 資料収集</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：APIを介したログの構造化・自動収集により、突合準備時間の短縮が可能です。</td>
+        <td>現時点で確認されている過去情報：APIを活用し、各モデルの出力履歴と、それに対する人間によるレビューの証跡を自動突合して資料収集する。</td>
       </tr>
       <tr>
         <td>④ 分析・検証</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：AIを用いたログ解析により、人手では特定が困難な複雑な相関性や微細な異常値の検出に有用です。</td>
+        <td>現時点で確認されている過去情報：人手では見逃しがちな複雑なクエリのパターンや、AIによる回答の異常傾向を機械学習等で分析し、検証の網羅性を高める。</td>
       </tr>
       <tr>
         <td>⑤ 指摘・原因分析</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：過去のインシデント事例検索や、基準との乖離箇所の特定補助により、指摘文案の作成を支援します。</td>
+        <td>現時点で確認されている過去情報：規程違反の可能性がある箇所をAIで抽出・要約させ、監査人が事実を確認するための指摘ドラフト作成を支援させる。</td>
       </tr>
       <tr>
         <td>⑥ 報告</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：膨大な監査結果の要約ドラフト作成を補助し、経営層への報告迅速化を図ります。</td>
+        <td>現時点で確認されている過去情報：経営層への報告において、AIの精度評価と、AIの回答を人間が検証したプロセスを視覚化し、監査の透明性を高める。</td>
       </tr>
       <tr>
         <td>⑦ フォローアップ</td>
         <td><span class="status unchanged">更新なし</span></td>
-        <td>現時点で確認されている過去情報：是正措置の完了確認ログを定期的にモニタリングし、継続的な監査態勢（Continuous Auditing）を実現します。</td>
+        <td>現時点で確認されている過去情報：AIシステムの設定更新ログを監視し、改善措置が継続的に機能しているか、またはAI側の挙動が変更されていないかを継続的にモニタリングする。</td>
       </tr>
     </tbody>
   </table>
-  <p><strong>注意書き：</strong>AIによる出力はあくまで監査人の判断を支援する補助ツールであり、監査証拠そのものではありません。AIの生成物については、常に原資料、システムログ、および担当者による妥当性の検証が必須です。</p>
+  <p><small>※注意：AIによる生成物や分析結果は監査証拠そのものではなく、あくまで判断を支援する補助ツールです。必ず原資料・ログとの突合、および監査人による事実確認と評価を行ってください。</small></p>
 </section>
 
 <section><h2>8. 今後ウォッチすべき事項</h2><ul>
-<li>エージェントAIの決定事項に対する「人間によるレビュー」の実効性評価基準の策定。</li>
-<li>CopilotにおけるGrok等の他社モデル統合時における、データプライバシー・ポリシーの一貫性の担保。</li>
+<li>エージェントによるシステム変更操作と、それに対する承認プロセスの一元管理。</li>
+<li>金融特化モデル利用時における、説明責任（Explainability）を担保するドキュメント要件。</li>
 </ul></section>
 
 <section><h2>9. 情報源</h2><ul>
-<li><a href="https://news.google.com/rss/articles/CBMiV0FVX3lxTE5CN1RPWkxSMkxwNTNETmpqem9oYUwxal96aE9WV0s5MUxaU3IzaTZyZENkWjV4RnVBNnQtR1B1WHNHM2JHZHRYYmJCejhwU09GUmp6OEFXZw?oc=5&hl=en-US&gl=US&ceid=US:en">OpenAI Status: Work Mode errors</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE55RjB3U1pjRUtMSUlGaGhvX0ptWFVkYlg5Rk1Fd3AtYVBEZm5UQmpVQmc1Yi1WRkFqbEVrOVFrQ2FpMVNCTDRDZDNsY1k5VHhBS1FQSjhaM2Y1aVliOC1XSW1HLW8wY1RfZWJFMDE3N3Zmdw?oc=5&hl=en-US&gl=US&ceid=US:en">OpenAI: ChatGPT for Financial Services</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxOVDIzNzRDTUpFM3hvblJLcHFBX3B6YUV4OVR1Qmc5TnMwd1dfU1RleU9tdlNpb1R6NDBkRVdNX2lzX0lZd0ZER2l6UENTQkw1NEQ3N2xOOFBuLW5SWTFWMmFKdlJnc1RWdWhoaVpNWUFBU1l3Z3JQMjlYYUNOZXRHNFhOckYwR1ZUbXRpWA?oc=5&hl=en-US&gl=US&ceid=US:en">Google: Gemini Windows app</a></li>
-<li><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1sOGpwSU80bnNqZUI3ZEdjWk9xQkV5Mi1oX09uVzR5QmVrd2R1c0M1UWxMdFRUc0U1RExVbWJ1UldieEh0RU0yaWM3MDNaazRuUFFRQm5VR096VmE1SmJGSVdXZ2hXd3NDbk96OHh6VDc2aE1UMHBlV2RBZw?oc=5&hl=en-US&gl=US&ceid=US:en">Anthropic: Claude for Financial Advisors</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMickFVX3lxTE55RjB3U1pjRUtMSUlGaGhvX0ptWFVkYlg5Rk1Fd3AtYVBEZm5UQmpVQmc1Yi1WRkFqbEVrOVFrQ2FpMVNCTDRDZDNsY1k5VHhBS1FQSjhaM2Y1aVliOC1XSW1HLW8wY1RfZWJFMDE3N3Zmdw?oc=5&hl=en-US&gl=US&ceid=US:en">OpenAI: Financial Services</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMijAFBVV95cUxOVDIzNzRDTUpFM3hvblJLcHFBX3B6YUV4OVR1Qmc5TnMwd1dfU1RleU9tdlNpb1R6NDBkRVdNX2lzX0lZd0ZER2l6UENTQkw1NEQ3N2xOOFBuLW5SWTFWMmFKdlJnc1RWdWhoaVpNWUFBU1l3Z3JQMjlYYUNOZXRHNFhOckYwR1ZUbXRpWA?oc=5&hl=en-US&gl=US&ceid=US:en">Google: Gemini Windows</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMie0FVX3lxTE1sOGpwSU80bnNqZUI3ZEdjWk9xQkV5Mi1oX09uVzR5QmVrd2R1c0M1UWxMdFRUc0U1RExVbWJ1UldieEh0RU0yaWM3MDNaazRuUFFRQm5VR096VmE1SmJGSVdXZ2hXd3NDbk96OHh6VDc2aE1UMHBlV2RBZw?oc=5&hl=en-US&gl=US&ceid=US:en">Anthropic: Financial Advisors</a></li>
 <li><a href="https://news.google.com/rss/articles/CBMi1AFBVV95cUxQVDk1V194bW5iUXlURGxyN2kzSDRsMTRzZ3RXdU42RG0taHV6LUVXYzdTalkzczZ5RVI2OFZNYWFzdkNFREVZNll6OUx6dFdWcWd2dWI2cWVyNGZCUWE5dGZlQU5tekRJcjFfbWI3eHdQRmEwM0ljbGJaNkVGZ2tMTno0MXpLTFBrblRVOC1VOHp1eXZqdHUyNURzaXpqRFd3Q3U0S0lOdDFfWGMxSjd2XzRPdWdmZDFmTTRIRHZNRU0wR1ZJbHdkX1B6LVZSc25LMTlkOQ?oc=5&hl=en-US&gl=US&ceid=US:en">Microsoft: Troubleshooting Agent</a></li>
+<li><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxNVHdjcnBJZDFPek1SSzFGNFF6eDVIdGFIWi1VZjlFVWdldVFFM0VhdEF0dEJlN2RDcnM5ajNDb2ExQW0wRG5lS0ExT0RuVm83emYyWS1NNU9HbEE5eUpXcWlNbWRMOEJrVU5yejJKSFNsczd1aFB1TjEycUJGMkFFVklmLW5iclZxZ1FRNE9FdjF5d0I5bnR1cjZQT2lZcmJneVlnMXRINlVWQVFhd1hEclJZamtxQQ?oc=5&hl=en-US&gl=US&ceid=US:en">Microsoft: Grok Integration</a></li>
 </ul></section>
 <footer><p>このレポートは公開情報に基づく情報整理であり、監査判断そのものを代替するものではありません。</p></footer>
-</main></body></html>
+</main>
+</body>
+</html>
